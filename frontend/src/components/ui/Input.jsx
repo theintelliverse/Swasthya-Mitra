@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Input component with Tailwind CSS styling
+ */
 const Input = ({
     label,
     type = 'text',
@@ -8,76 +11,40 @@ const Input = ({
     className = '',
     ...props
 }) => {
-    const containerStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.5rem',
-        marginBottom: '1rem',
-        width: '100%',
-    };
-
-    const labelStyle = {
-        fontSize: '0.875rem',
-        fontWeight: '500',
-        color: 'var(--slate-700)',
-    };
-
-    const inputWrapperStyle = {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '0.75rem 1rem',
-        paddingLeft: Icon ? '2.5rem' : '1rem',
-        borderRadius: 'var(--radius-md)',
-        border: `1px solid ${error ? 'var(--danger)' : 'var(--slate-300)'}`,
-        backgroundColor: 'white',
-        fontSize: '1rem',
-        color: 'var(--slate-900)',
-        transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
-        outline: 'none',
-    };
-
-    const iconStyle = {
-        position: 'absolute',
-        left: '0.75rem',
-        color: 'var(--slate-400)',
-        pointerEvents: 'none',
-    };
-
-    const errorStyle = {
-        fontSize: '0.75rem',
-        color: 'var(--danger)',
-        marginTop: '0.25rem',
-    };
-
-    const handleFocus = (e) => {
-        e.target.style.borderColor = 'var(--primary-500)';
-        e.target.style.boxShadow = '0 0 0 3px var(--primary-100)';
-    };
-
-    const handleBlur = (e) => {
-        e.target.style.borderColor = error ? 'var(--danger)' : 'var(--slate-300)';
-        e.target.style.boxShadow = 'none';
-    };
+    const inputClasses = `
+        w-full px-4 py-3 rounded-lg
+        border ${error ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}
+        bg-white dark:bg-slate-800
+        text-slate-900 dark:text-white
+        placeholder:text-slate-400 dark:placeholder:text-slate-500
+        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
+        transition-all duration-200
+        ${Icon ? 'pl-10' : ''}
+    `;
 
     return (
-        <div style={containerStyle} className={className}>
-            {label && <label style={labelStyle}>{label}</label>}
-            <div style={inputWrapperStyle}>
-                {Icon && <Icon size={18} style={iconStyle} />}
+        <div className={`flex flex-col gap-2 mb-4 w-full ${className}`}>
+            {label && (
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    {label}
+                </label>
+            )}
+            <div className="relative flex items-center">
+                {Icon && (
+                    <Icon
+                        size={18}
+                        className="absolute left-3 text-slate-400 dark:text-slate-500 pointer-events-none"
+                    />
+                )}
                 <input
                     type={type}
-                    style={inputStyle}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
+                    className={inputClasses}
                     {...props}
                 />
             </div>
-            {error && <span style={errorStyle}>{error}</span>}
+            {error && (
+                <span className="text-xs text-red-500 mt-1">{error}</span>
+            )}
         </div>
     );
 };

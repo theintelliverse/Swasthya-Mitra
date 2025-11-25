@@ -4,13 +4,11 @@ import { Globe } from 'lucide-react';
 
 /**
  * LanguageSwitcher Component
- * 
- * A reusable language switcher that displays the current language
- * and allows users to change languages from a dropdown.
- * Automatically updates logo and all translated text throughout the app.
+ * Supports both dropdown and button (cycle) variants.
+ * Uses CSS variables for theming to respect light and dark modes.
  */
 const LanguageSwitcher = ({ variant = 'dropdown' }) => {
-    const { language, setLanguage, t } = useLanguage();
+    const { language, setLanguage } = useLanguage();
 
     const languages = [
         { code: 'en', name: 'English', flag: '🇬🇧', native: 'English' },
@@ -45,7 +43,7 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
         { code: 'kha', name: 'Khasi', flag: '🇮🇳', native: 'Ka Ktien Khasi' },
         { code: 'grt', name: 'Garo', flag: '🇮🇳', native: 'A·chik' },
         { code: 'lus', name: 'Mizo', flag: '🇮🇳', native: 'Mizo ṭawng' },
-        { code: 'trp', name: 'Kokborok', flag: '🇮🇳', native: 'Kokborok' }
+        { code: 'trp', name: 'Kokborok', flag: '🇮🇳', native: 'Kokborok' },
     ];
 
     if (variant === 'button') {
@@ -61,21 +59,21 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                     alignItems: 'center',
                     gap: '0.5rem',
                     padding: '0.5rem 1rem',
-                    backgroundColor: 'var(--primary-100)',
-                    border: '1px solid var(--primary-300)',
+                    backgroundColor: 'var(--lang-bg)',
+                    border: '1px solid var(--lang-border)',
                     borderRadius: 'var(--radius-md)',
-                    color: 'var(--primary-700)',
+                    color: 'var(--lang-text)',
                     fontSize: '0.875rem',
                     fontWeight: 600,
                     cursor: 'pointer',
-                    transition: 'all var(--transition-fast)'
+                    transition: 'all var(--transition-fast)',
                 }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--primary-200)';
+                onMouseEnter={e => {
+                    e.currentTarget.style.backgroundColor = 'var(--lang-bg-hover)';
                     e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
                 }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--primary-100)';
+                onMouseLeave={e => {
+                    e.currentTarget.style.backgroundColor = 'var(--lang-bg)';
                     e.currentTarget.style.boxShadow = 'none';
                 }}
             >
@@ -85,40 +83,41 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
         );
     }
 
+    // Dropdown variant
     return (
         <div style={{ position: 'relative' }}>
             <select
                 value={language}
-                onChange={(e) => setLanguage(e.target.value)}
+                onChange={e => setLanguage(e.target.value)}
                 style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
                     padding: '0.5rem 2rem 0.5rem 0.75rem',
-                    backgroundColor: 'var(--primary-100)',
-                    border: '1px solid var(--primary-300)',
+                    backgroundColor: 'var(--lang-bg)',
+                    border: '1px solid var(--lang-border)',
                     borderRadius: 'var(--radius-md)',
-                    color: 'var(--primary-700)',
+                    color: 'var(--lang-text)',
                     fontSize: '0.875rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)',
                     appearance: 'none',
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234F46E5' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23${'var(--icon-color)'}' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 0.5rem center',
-                    minWidth: '180px'
+                    backgroundPosition: 'right 0.75rem center',
+                    minWidth: '180px',
                 }}
-                onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--primary-200)';
+                onMouseOver={e => {
+                    e.currentTarget.style.backgroundColor = 'var(--lang-bg-hover)';
                     e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
                 }}
-                onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--primary-100)';
+                onMouseOut={e => {
+                    e.currentTarget.style.backgroundColor = 'var(--lang-bg)';
                     e.currentTarget.style.boxShadow = 'none';
                 }}
             >
-                {languages.map((lang) => (
+                {languages.map(lang => (
                     <option key={lang.code} value={lang.code}>
                         {lang.flag} {lang.native} ({lang.name})
                     </option>

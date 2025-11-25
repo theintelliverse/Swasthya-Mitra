@@ -8,127 +8,133 @@
  */
 
 :root {
-   /* ========================================
+  /* ========================================
      COLOR PALETTE - Premium Medical Theme
      ======================================== */
 
-   /* Primary Brand Colors (Teal/Emerald)
+  /* Primary Brand Colors (Teal/Emerald)
    * Represents: Trust, Health, Medical Care
    * Usage: Primary buttons, links, highlights
    */
-   --primary-50: #f0fdfa;
-   --primary-100: #ccfbf1;
-   --primary-200: #99f6e4;
-   --primary-300: #5eead4;
-   --primary-400: #2dd4bf;
-   --primary-500: #14b8a6;
-   --primary-600: #0d9488;
-   /* Main brand color */
-   --primary-700: #0a6b62;
-   /* Darkened for better contrast */
-   --primary-800: #115e59;
-   --primary-900: #134e4a;
-   --primary-950: #042f2e;
+  --primary-50: #f0fdfa;
+  --primary-100: #ccfbf1;
+  --primary-200: #99f6e4;
+  --primary-300: #5eead4;
+  --primary-400: #2dd4bf;
+  --primary-500: #14b8a6;
+  --primary-600: #0d9488;
+  /* Main brand color */
+  --primary-700: #0a6b62;
+  /* Darkened for better contrast */
+  --primary-800: #115e59;
+  --primary-900: #134e4a;
+  --primary-950: #042f2e;
 
-   /* Secondary Brand Colors (Indigo/Blue)
+  /* Secondary Brand Colors (Indigo/Blue)
    * Represents: Professionalism, Technology
    * Usage: Secondary actions, info states
    */
-   --secondary-50: #eef2ff;
-   --secondary-100: #e0e7ff;
-   --secondary-200: #c7d2fe;
-   --secondary-300: #a5b4fc;
-   --secondary-400: #818cf8;
-   --secondary-500: #6366f1;
-   --secondary-600: #4f46e5;
-   --secondary-700: #4338ca;
-   --secondary-800: #3730a3;
-   --secondary-900: #312e81;
-   --secondary-950: #1e1b4b;
+  --secondary-50: #eef2ff;
+  --secondary-100: #e0e7ff;
+  --secondary-200: #c7d2fe;
+  --secondary-300: #a5b4fc;
+  --secondary-400: #818cf8;
+  --secondary-500: #6366f1;
+  --secondary-600: #4f46e5;
+  --secondary-700: #4338ca;
+  --secondary-800: #3730a3;
+  --secondary-900: #312e81;
+  --secondary-950: #1e1b4b;
 
-   /* Neutral Colors (Slate)
+  /* Neutral Colors (Slate)
    * Usage: Text, borders, backgrounds
    * Improved for WCAG AA contrast compliance
    */
-   --slate-50: #f8fafc;
-   --slate-100: #f1f5f9;
-   --slate-200: #e2e8f0;
-   --slate-300: #cbd5e1;
-   --slate-400: #94a3b8;
-   --slate-500: #64748b;
-   --slate-600: #475569;
-   /* Min for body text on white (4.5:1) */
-   --slate-700: #334155;
-   /* Better for headings (7:1) */
-   --slate-800: #1e293b;
-   --slate-900: #0f172a;
-   --slate-950: #020617;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  /* Min for body text on white (4.5:1) */
+  --slate-700: #334155;
+  /* Better for headings (7:1) */
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
 
-   /* Semantic Colors
+  /* Semantic Colors
    * Usage: Status indicators, alerts, notifications
    * Adjusted for better visibility
    */
-   --success: #059669;
-   /* Darkened for better contrast */
-   --warning: #d97706;
-   /* Darkened for better contrast */
-   --danger: #dc2626;
-   /* Darkened for better contrast */
-   --info: #2563eb;
-   /* Darkened for better contrast */
+  --success: #059669;
+  /* Darkened for better contrast */
+  --warning: #d97706;
+  /* Darkened for better contrast */
+  --danger: #dc2626;
+  /* Darkened for better contrast */
+  --info: #2563eb;
+  /* Darkened for better contrast */
 
-   /* ========================================
+  /* ========================================
      TYPOGRAPHY
      ======================================== */
 
-   /* Font Families */
-   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-   --font-display: 'Outfit', var(--font-sans);
-   /* For headings and hero text */
+  /* Font Families */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+  /* For headings and hero text */
 
-   /* ========================================
+  /* ========================================
      SHADOWS & GLASSMORPHISM EFFECTS
      ======================================== */
 
-   /* Standard Elevation Shadows */
-   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Standard Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
-   /* Glassmorphism Variables (for premium card effects) */
-   --glass-bg: rgba(255, 255, 255, 0.7);
-   --glass-border: rgba(255, 255, 255, 0.5);
-   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-   --backdrop-blur: blur(12px);
+  /* Glassmorphism Variables (for premium card effects) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --backdrop-blur: blur(12px);
 
-   /* ========================================
+  /* ========================================
      BORDER RADIUS VALUES
      ======================================== */
 
-   --radius-sm: 0.375rem;
-   /* 6px - Small elements */
-   --radius-md: 0.5rem;
-   /* 8px - Buttons, inputs */
-   --radius-lg: 0.75rem;
-   /* 12px - Cards */
-   --radius-xl: 1rem;
-   /* 16px - Large cards */
-   --radius-2xl: 1.5rem;
-   /* 24px - Hero sections */
-   --radius-full: 9999px;
-   /* Pills, badges */
+  --radius-sm: 0.375rem;
+  /* 6px - Small elements */
+  --radius-md: 0.5rem;
+  /* 8px - Buttons, inputs */
+  --radius-lg: 0.75rem;
+  /* 12px - Cards */
+  --radius-xl: 1rem;
+  /* 16px - Large cards */
+  --radius-2xl: 1.5rem;
+  /* 24px - Hero sections */
+  --radius-full: 9999px;
+  /* Pills, badges */
 
-   /* ========================================
+  /* ========================================
      ANIMATION & TRANSITIONS
      ======================================== */
 
-   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-   /* Quick hover effects */
-   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-   /* Standard transitions */
-   --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-   /* Page transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Quick hover effects */
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Standard transitions */
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Page transitions */
+  /* Language Switcher Variables */
+  --lang-bg: var(--primary-100);
+  --lang-bg-hover: var(--primary-200);
+  --lang-border: var(--primary-300);
+  --lang-text: var(--primary-700);
+  --icon-color: var(--primary-500);
 }
 
 /**
@@ -136,23 +142,23 @@
  * Applied when .dark class is present on root element
  */
 .dark {
-   color-scheme: dark;
+  color-scheme: dark;
 
-   /* Override glassmorphism for dark theme */
-   --glass-bg: rgba(15, 23, 42, 0.72);
-   --glass-border: rgba(148, 163, 184, 0.25);
-   --glass-shadow: 0 16px 40px rgba(2, 6, 23, 0.4);
+  /* Override glassmorphism for dark theme */
+  --glass-bg: rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(148, 163, 184, 0.25);
+  --glass-shadow: 0 16px 40px rgba(2, 6, 23, 0.4);
 
-   /* Adjust neutral colors for dark mode */
-   --slate-50: #0b1120;
-   --slate-100: #111827;
-   --slate-200: #1f2937;
-   --slate-300: #273347;
-   --slate-400: #64748b;
-   --slate-500: #94a3b8;
-   --slate-600: #cbd5f0;
-   --slate-700: #e2e8f0;
-   --slate-800: #f1f5f9;
-   --slate-900: #f8fafc;
-   --slate-950: #ffffff;
+  /* Adjust neutral colors for dark mode */
+  --slate-50: #0b1120;
+  --slate-100: #111827;
+  --slate-200: #1f2937;
+  --slate-300: #273347;
+  --slate-400: #64748b;
+  --slate-500: #94a3b8;
+  --slate-600: #cbd5f0;
+  --slate-700: #e2e8f0;
+  --slate-800: #f1f5f9;
+  --slate-900: #f8fafc;
+  --slate-950: #ffffff;
 }

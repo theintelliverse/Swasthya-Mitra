@@ -1,12 +1,12 @@
 import React from 'react';
 import { Bell, Search, User, Moon, Sun, Globe } from 'lucide-react';
-import Button from '../ui/Button';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
+import LanguageSwitcher from '../LanguageSwitcher';
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
-    const { language, toggleLanguage, t } = useLanguage();
+    const { t } = useLanguage(); // t may be used for translations
 
     return (
         <header style={{
@@ -49,16 +49,16 @@ const Navbar = ({ user }) => {
                     />
                 </div>
 
-                <button onClick={toggleLanguage} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.875rem', fontWeight: 600, color: 'var(--slate-600)' }}>
-                    <Globe size={18} />
-                    {language.toUpperCase()}
-                </button>
+                {/* Language Switcher */}
+                <LanguageSwitcher variant="dropdown" />
 
-                <button onClick={toggleTheme} style={{ color: 'var(--slate-600)' }}>
+                {/* Theme toggle */}
+                <button onClick={toggleTheme} style={{ color: 'var(--slate-600)', background: 'none', border: 'none', cursor: 'pointer' }}>
                     {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
 
-                <button style={{ position: 'relative', color: 'var(--slate-600)' }}>
+                {/* Notifications */}
+                <button style={{ position: 'relative', color: 'var(--slate-600)', background: 'none', border: 'none', cursor: 'pointer' }}>
                     <Bell size={20} />
                     <span style={{
                         position: 'absolute',
@@ -68,9 +68,10 @@ const Navbar = ({ user }) => {
                         height: '8px',
                         backgroundColor: 'var(--danger)',
                         borderRadius: '50%'
-                    }}></span>
+                    }} />
                 </button>
 
+                {/* User info */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{ textAlign: 'right' }}>
                         <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--slate-900)' }}>Dr. Sharma</p>
