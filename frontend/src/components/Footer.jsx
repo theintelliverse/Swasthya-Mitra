@@ -12,7 +12,7 @@ const Footer = () => {
             style={{
                 background: theme === 'light'
                     ? 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%)'
-                    : 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(29, 42, 65, 0.92) 50%, rgba(6, 63, 78, 0.66) 100%)',
+                    : 'linear-gradient(135deg,  rgba(6, 63, 78, 0.66) 0%, rgba(29, 42, 65, 0.92) 50%,rgba(15, 23, 42, 0.95) 100%',
                 borderTop: theme === 'light'
                     ? '1px solid #e2e8f0'
                     : '1px solid rgba(103, 232, 249, 0.2)',
@@ -39,7 +39,7 @@ const Footer = () => {
                         <img
                             src={getLogo()}
                             alt="Swasthya-Mitra"
-                            style={{ height: '60px', width: 'auto' }}
+                            style={{ height: '60px', width: 'auto' ,marginLeft: '-1.9rem',marginTop: '-0.7rem'}}
                             className="nav-logo"
                             onError={(e) => {
                                 e.currentTarget.src = '/assets/logo-en.svg';
@@ -47,7 +47,7 @@ const Footer = () => {
                         />
                     </div>
                     <p style={{ fontSize: '0.875rem', marginBottom: '1rem', color: theme === 'light' ? '#64748b' : '#94a3b8' }}>
-                        {t('appDescription') || 'Transforming healthcare delivery with innovative technology and patient-centric solutions.'}
+                        {t('App Description') || 'Transforming healthcare delivery with innovative technology and patient-centric solutions.'}
                     </p>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <a

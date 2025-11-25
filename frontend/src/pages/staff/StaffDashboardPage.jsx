@@ -10,11 +10,11 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
   
   return (
     <Card>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
-          <p style={{ color: theme === 'light' ? '#1e293b' : '#cbd5e1', fontSize: '0.875rem', fontWeight: 500 }}>{title}</p>
-          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, marginTop: '0.25rem', color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>{value}</h3>
-          <p style={{ fontSize: '0.875rem', marginTop: '0.25rem', color: theme === 'light' ? '#1e293b' : '#cbd5e1' }}>
+          <p style={{ color: theme === 'light' ? '#64748b' : '#cbd5e1', fontSize: '0.875rem', fontWeight: 500 }}>{title}</p>
+          <h3 style={{ fontSize: '1.75rem', fontWeight: 700, marginTop: '0.25rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>{value}</h3>
+          <p style={{ fontSize: '0.875rem', marginTop: '0.25rem', color: theme === 'light' ? '#64748b' : '#cbd5e1' }}>
             {subtitle}
           </p>
         </div>
@@ -22,20 +22,16 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
           <div style={{
             padding: '0.75rem',
             borderRadius: 'var(--radius-lg)',
-            backgroundColor: `var(--${color}-50)`,
-            color: `var(--${color}-600)`
+            backgroundColor: theme === 'light' 
+              ? `var(--${color}-50)` 
+              : 'rgba(103, 232, 249, 0.1)',
+            color: theme === 'light' 
+              ? `var(--${color}-600)` 
+              : '#67e8f9'
           }}>
             <Icon size={24} />
           </div>
         )}
-        <div style={{
-          padding: '0.75rem',
-          borderRadius: 'var(--radius-lg)',
-          backgroundColor: `var(--${color}-50)`,
-          color: `var(--${color}-600)`
-        }}>
-          <Icon size={24} />
-        </div>
       </div>
     </Card>
   );
@@ -47,10 +43,21 @@ const StaffDashboardPage = () => {
 
   return (
     <Layout role="staff">
-      <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="dashboard-header">
         <div>
-          <h1 style={{ fontSize: '1.875rem', marginBottom: '0.5rem', color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>Good Morning, Priya</h1>
-          <p style={{ color: theme === 'light' ? '#1e293b' : '#cbd5e1' }}>Manage patient queues and clinic operations.</p>
+          <h1 style={{ 
+            fontSize: '1.875rem', 
+            marginBottom: '0.5rem', 
+            color: theme === 'light' ? '#0f172a' : '#f1f5f9' 
+          }}>
+            Good Morning, Priya
+          </h1>
+          <p style={{ 
+            color: theme === 'light' ? '#64748b' : '#cbd5e1',
+            fontSize: '1rem'
+          }}>
+            Manage patient queues and clinic operations.
+          </p>
         </div>
         <Button>
           <UserPlus size={20} style={{ marginRight: '0.5rem' }} />
@@ -58,18 +65,18 @@ const StaffDashboardPage = () => {
         </Button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className="dashboard-stat-grid">
         <StatCard title="In Queue" value="12" subtitle="+3 new patients" icon={Users} color="primary" />
         <StatCard title="Avg Wait Time" value="18m" subtitle="Better than usual" icon={Clock} color="warning" />
         <StatCard title="Checked In" value="28" subtitle="Today's total" icon={Activity} color="success" />
         <StatCard title="Appointments" value="15" subtitle="Scheduled today" icon={Calendar} color="secondary" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+      <div className="dashboard-grid-2-1">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <Card>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1.25rem', color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>Current Queue</h3>
+            <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.25rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>Current Queue</h3>
               <Button variant="outline" size="sm">Manage Queue</Button>
             </div>
 
@@ -79,32 +86,34 @@ const StaffDashboardPage = () => {
                 { name: 'Sita Devi', token: 2, phone: '+91 98765 43211', reason: 'Follow-up', status: 'Waiting' },
                 { name: 'Arjun Singh', token: 3, phone: '+91 98765 43212', reason: 'Fever & Cold', status: 'Waiting' }
               ].map((patient) => (
-                <div key={patient.token} style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '1rem',
-                  backgroundColor: 'var(--slate-50)',
-                  borderRadius: 'var(--radius-md)',
-                  border: patient.status === 'In Progress' ? '2px solid var(--primary-500)' : '1px solid var(--slate-100)'
+                <div key={patient.token} className="queue-item" style={{
+                  backgroundColor: theme === 'light' ? '#f8fafc' : 'rgba(103, 232, 249, 0.05)',
+                  border: patient.status === 'In Progress' 
+                    ? theme === 'light' ? '2px solid #0891b2' : '2px solid #67e8f9'
+                    : theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)',
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%', minWidth: 0 }}>
                     <div style={{
                       width: '40px',
                       height: '40px',
                       borderRadius: '50%',
-                      backgroundColor: patient.status === 'In Progress' ? 'var(--primary-500)' : 'var(--primary-100)',
-                      color: patient.status === 'In Progress' ? 'white' : 'var(--primary-700)',
+                      backgroundColor: patient.status === 'In Progress' 
+                        ? theme === 'light' ? '#0891b2' : '#67e8f9'
+                        : theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.2)',
+                      color: patient.status === 'In Progress' 
+                        ? 'white'
+                        : theme === 'light' ? '#0891b2' : '#67e8f9',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontWeight: 700
+                      fontWeight: 700,
+                      flexShrink: 0
                     }}>
                       {patient.token}
                     </div>
-                    <div>
-                      <h4 style={{ fontWeight: 600, color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>{patient.name}</h4>
-                      <p style={{ fontSize: '0.875rem', color: theme === 'light' ? '#1e293b' : '#cbd5e1' }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <h4 style={{ fontWeight: 600, color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>{patient.name}</h4>
+                      <p style={{ fontSize: '0.875rem', color: theme === 'light' ? '#64748b' : '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {patient.reason} • {patient.phone}
                       </p>
                     </div>
@@ -123,14 +132,14 @@ const StaffDashboardPage = () => {
           </Card>
 
           <Card>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>Patient Search</h3>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>Patient Search</h3>
             <div style={{ position: 'relative', marginBottom: '1rem' }}>
               <Search size={20} style={{
                 position: 'absolute',
                 left: '0.75rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: 'var(--slate-400)'
+                color: theme === 'light' ? '#94a3b8' : '#cbd5e1'
               }} />
               <input
                 type="text"
@@ -141,10 +150,11 @@ const StaffDashboardPage = () => {
                   width: '100%',
                   padding: '0.75rem 1rem 0.75rem 2.5rem',
                   borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--slate-200)',
-                  backgroundColor: 'var(--slate-50)',
+                  border: theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)',
+                  backgroundColor: theme === 'light' ? '#f8fafc' : 'rgba(103, 232, 249, 0.05)',
                   fontSize: '0.875rem',
-                  outline: 'none'
+                  outline: 'none',
+                  color: theme === 'light' ? '#0f172a' : '#f1f5f9'
                 }}
               />
             </div>
@@ -156,7 +166,7 @@ const StaffDashboardPage = () => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <Card>
-            <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: theme === 'light' ? '#0f172a' : '#e0e7ff' }}>Quick Actions</h3>
+            <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>Quick Actions</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <Button variant="outline" style={{ justifyContent: 'flex-start' }}>
                 <UserPlus size={18} style={{ marginRight: '0.5rem' }} />
@@ -179,10 +189,10 @@ const StaffDashboardPage = () => {
 
           <Card style={{
             background: 'linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%)',
-            color: 'white',
+            color: theme === 'light' ? '#0f172a' : '#f1f5f9',
             border: 'none'
           }}>
-            <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: 'white' }}>Today's Stats</h3>
+            <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>Today's Stats</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ opacity: 0.9 }}>Walk-ins</span>

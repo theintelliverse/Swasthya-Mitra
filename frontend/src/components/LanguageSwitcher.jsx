@@ -8,7 +8,13 @@ import { Globe } from 'lucide-react';
  * Supports both dropdown and button (cycle) variants.
  * Uses CSS variables for theming to respect light and dark modes.
  */
-const LanguageSwitcher = ({ variant = 'dropdown' }) => {
+const LanguageSwitcher = ({
+    variant = 'dropdown',
+    containerStyle = {},
+    selectStyle = {},
+    buttonStyle = {},
+    showLabel = true,
+}) => {
     const { language, setLanguage } = useLanguage();
     const { theme } = useTheme();
 
@@ -59,7 +65,7 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.5rem',
+                    gap: showLabel ? '0.5rem' : '0',
                     padding: '0.5rem 1rem',
                     backgroundColor: 'var(--lang-bg)',
                     border: '1px solid var(--lang-border)',
@@ -69,6 +75,7 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)',
+                    ...buttonStyle,
                 }}
                 onMouseEnter={e => {
                     e.currentTarget.style.backgroundColor = 'var(--lang-bg-hover)';
@@ -80,14 +87,14 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                 }}
             >
                 <Globe size={16} />
-                {language.toUpperCase()}
+                {showLabel && <span>{language.toUpperCase()}</span>}
             </button>
         );
     }
 
     // Dropdown variant with improved dark mode support
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', minWidth: 0, ...containerStyle }}>
             <select
                 value={language}
                 onChange={e => setLanguage(e.target.value)}
@@ -108,7 +115,12 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23${theme === 'light' ? '4F46E5' : '94a3b8'}' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'right 0.75rem center',
-                    minWidth: '180px',
+                    minWidth: 'clamp(120px, 18vw, 180px)',
+                    width: '100%',
+                    maxWidth: '220px',
+                    boxSizing: 'border-box',
+                    flexShrink: 1,
+                    ...selectStyle,
                 }}
                 onMouseOver={e => {
                     e.currentTarget.style.backgroundColor = theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(71, 85, 105, 0.9)';

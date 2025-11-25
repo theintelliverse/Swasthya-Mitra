@@ -64,20 +64,6 @@ const Sidebar = ({ role = 'doctor' }) => {
             {/* Mobile Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                style={{
-                    position: 'fixed',
-                    top: '1rem',
-                    left: '1rem',
-                    zIndex: 60,
-                    padding: '0.5rem',
-                    backgroundColor: 'white',
-                    borderRadius: 'var(--radius-md)',
-                    boxShadow: 'var(--shadow-md)',
-                    display: 'none', // Hidden on desktop via CSS media query ideally, but inline for now
-                    '@media (max-width: 768px)': {
-                        display: 'block'
-                    }
-                }}
                 className="mobile-menu-btn"
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -86,11 +72,9 @@ const Sidebar = ({ role = 'doctor' }) => {
             <aside
                 className={`sidebar ${isOpen ? 'open' : ''}`}
                 style={{
-                    width: '260px',
-                    height: '100vh',
                     background: theme === 'light'
                         ? '#ffffff'
-                        : 'linear-gradient(135deg, #0f172a 0%, #1a2e4a 50%, #0d2a3d 100%)',
+                        : 'linear-gradient(90deg, rgba(8, 145, 178, 0.05) 0%, rgba(26, 35, 50, 0.92) 50%, rgba(15, 23, 42, 0.95) 100%)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
                     borderRight: theme === 'light'
@@ -98,12 +82,6 @@ const Sidebar = ({ role = 'doctor' }) => {
                         : '1px solid rgba(103, 232, 249, 0.2)',
                     display: 'flex',
                     flexDirection: 'column',
-                    position: 'fixed',
-                    left: 0,
-                    top: 0,
-                    zIndex: 50,
-                    transition: 'transform var(--transition-normal)',
-                    // Transform logic handled by CSS class in index.css for cleaner responsive behavior
                 }}
             >
                 <div style={{ padding: '1.5rem', borderBottom: theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)' }}>
@@ -128,18 +106,35 @@ const Sidebar = ({ role = 'doctor' }) => {
                         <NavLink
                             key={link.path}
                             to={link.path}
-                            onClick={() => setIsOpen(false)} // Close on click mobile
+                            onClick={() => setIsOpen(false)}
                             style={({ isActive }) => ({
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.75rem',
                                 padding: '0.75rem 1rem',
-                                borderRadius: 'var(--radius-md)',
-                                color: isActive ? 'var(--primary-700)' : 'var(--slate-600)',
-                                backgroundColor: isActive ? 'var(--primary-50)' : 'transparent',
+                                borderRadius: '0.5rem',
+                                color: isActive 
+                                    ? (theme === 'light' ? '#0891b2' : '#67e8f9')
+                                    : (theme === 'light' ? '#64748b' : '#cbd5e1'),
+                                backgroundColor: isActive
+                                    ? (theme === 'light' ? 'rgba(8, 145, 178, 0.1)' : 'rgba(103, 232, 249, 0.1)')
+                                    : 'transparent',
                                 fontWeight: isActive ? 600 : 500,
-                                transition: 'all var(--transition-fast)',
+                                transition: 'all 0.3s ease',
+                                border: isActive ? `1px solid rgba(103, 232, 249, 0.2)` : 'none',
+                                cursor: 'pointer'
                             })}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = theme === 'light' 
+                                    ? 'rgba(8, 145, 178, 0.05)' 
+                                    : 'rgba(103, 232, 249, 0.08)';
+                            }}
+                            onMouseLeave={(e) => {
+                                const isActive = location.pathname === link.path;
+                                e.currentTarget.style.backgroundColor = isActive
+                                    ? (theme === 'light' ? 'rgba(8, 145, 178, 0.1)' : 'rgba(103, 232, 249, 0.1)')
+                                    : 'transparent';
+                            }}
                         >
                             <link.icon size={20} />
                             {link.label}
@@ -147,20 +142,27 @@ const Sidebar = ({ role = 'doctor' }) => {
                     ))}
                 </nav>
 
-                <div style={{ padding: '1.5rem', borderTop: '1px solid var(--slate-100)' }}>
+                <div style={{ padding: '1.5rem', borderTop: theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)' }}>
                     <button style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.75rem',
                         width: '100%',
                         padding: '0.75rem 1rem',
-                        borderRadius: 'var(--radius-md)',
-                        color: 'var(--danger)',
+                        borderRadius: '0.5rem',
+                        color: theme === 'light' ? '#ef4444' : '#fca5a5',
                         fontWeight: 500,
-                        transition: 'background-color var(--transition-fast)',
+                        backgroundColor: 'transparent',
+                        border: `1px solid ${theme === 'light' ? '#fee2e2' : 'rgba(252, 165, 165, 0.2)'}`,
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
                     }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fef2f2'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = theme === 'light' ? '#fef2f2' : 'rgba(252, 165, 165, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
                     >
                         <LogOut size={20} />
                         {t('logout')}

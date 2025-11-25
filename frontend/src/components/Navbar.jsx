@@ -22,12 +22,13 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
 
     return (
         <nav
-            className="app-navbar"
+            className="public-navbar"
             style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '1rem',
+                padding: 'clamp(0.75rem, 2vw, 1.5rem)',
                 background: transparent
                     ? 'transparent'
                     : theme === 'light'
@@ -40,19 +41,22 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
                     : theme === 'light'
                     ? '1px solid #e2e8f0'
                     : '1px solid rgba(103, 232, 249, 0.25)',
-                padding: '0.75rem 1.5rem',
                 position: 'sticky',
                 top: 0,
                 zIndex: 1000,
                 transition: 'all 0.3s ease',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
             }}
         >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
                 <img
                     src={getLogo()}
                     alt="Swasthya-Mitra"
                     style={{
-                        height: '45px',
+                        height: 'clamp(35px, 5vw, 50px)',
                         width: 'auto',
                         cursor: 'pointer',
                     }}
@@ -64,22 +68,20 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
                 />
             </div>
             
-            <div
-                className="nav-actions"
-                style={{
-                    display: 'flex',
-                    gap: '0.5rem',
-                    alignItems: 'center',
-                    flexWrap: 'nowrap',
-                }}
-            >
+            <div className="nav-actions" style={{
+                display: 'flex',
+                gap: 'clamp(0.5rem, 1vw, 1rem)',
+                alignItems: 'center',
+                flexWrap: 'nowrap',
+                minWidth: 0,
+            }}>
                 {/* Language Dropdown */}
                 <select
                     value={language}
                     onChange={(e) => setLanguage && setLanguage(e.target.value)}
                     className="nav-language-select"
                     style={{
-                        padding: '0.6rem 2rem 0.6rem 0.75rem',
+                        padding: 'clamp(0.5rem, 1vw, 0.6rem) clamp(0.75rem, 2vw, 2rem) clamp(0.5rem, 1vw, 0.6rem) clamp(0.5rem, 1vw, 0.75rem)',
                         background: theme === 'light' 
                             ? '#ffffff'
                             : 'rgba(255, 255, 255, 0.3)',
@@ -90,10 +92,11 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
                             : '1.5px solid rgba(255, 255, 255, 0.5)',
                         borderRadius: '0.625rem',
                         color: theme === 'light' ? '#0f172a' : 'rgba(15, 23, 42, 0.8)',
-                        fontSize: '0.875rem',
+                        fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
                         fontWeight: 600,
                         cursor: 'pointer',
                         appearance: 'none',
+                        minWidth: 'clamp(40px, 10vw, 150px)',
                         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23${theme === 'light' ? '0f172a' : '0f172a'}' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'right 0.5rem center',
@@ -101,6 +104,7 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
                         boxShadow: theme === 'light' 
                             ? '0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1)'
                             : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        boxSizing: 'border-box',
                     }}
                     onMouseOver={(e) => {
                         e.currentTarget.style.transform = 'translateY(-1px)';
@@ -165,14 +169,13 @@ const Navbar = ({ showAuthButtons = true, transparent = false }) => {
                     <option value="trp" style={{ background: theme === 'light' ? '#ffffff' : '#1e293b', color: theme === 'light' ? '#0e7490' : '#e0f2fe', padding: '0.5rem', fontWeight: 600 }}>🇮🇳 Kokborok</option>
                 </select>
 
-                {/* Theme Toggle */}
                 <button
                     onClick={() => toggleTheme && toggleTheme()}
                     title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
                     className="nav-theme-toggle"
                     style={{
-                        width: '40px',
-                        height: '40px',
+                        width: 'clamp(36px, 8vw, 44px)',
+                        height: 'clamp(36px, 8vw, 44px)',
                         borderRadius: '0.625rem',
                         background: theme === 'light' 
                             ? '#f1f5f9'

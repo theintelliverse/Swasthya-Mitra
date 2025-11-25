@@ -42,7 +42,7 @@ const Button = ({
     outline: {
       backgroundColor: theme === 'light' ? 'transparent' : 'rgba(103, 232, 249, 0.1)',
       border: theme === 'light' ? '2px solid #cbd5e1' : '2px solid rgba(103, 232, 249, 0.3)',
-      color: theme === 'light' ? '#334155' : '#67e8f9',
+      color: theme === 'light' ? '#0f172a' : '#67e8f9',
     },
     ghost: {
       backgroundColor: 'transparent',

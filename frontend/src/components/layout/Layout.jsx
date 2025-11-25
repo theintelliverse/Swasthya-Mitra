@@ -17,9 +17,10 @@ const Layout = ({ children, role }) => {
     <div style={{ 
       minHeight: '100vh', 
       background: theme === 'light' 
-        ? 'linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%)'
-        : 'linear-gradient(180deg, #1a2332 0%, #0f172a 50%, #081529 100%)',
-      color: theme === 'light' ? 'var(--slate-900)' : 'var(--slate-50)'
+        ? 'rgba(255, 255, 255, 0.95)'
+        : 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)',
+      color: theme === 'light' ? '#0f172a' : '#f1f5f9',
+      transition: 'background-color 0.3s ease'
     }}>
       {/* Role-based sidebar navigation */}
       <Sidebar role={role} />
@@ -28,12 +29,7 @@ const Layout = ({ children, role }) => {
       <Navbar />
 
       {/* Main content area - responsive margins controlled by CSS */}
-      <main style={{
-        marginLeft: '260px', // Default for desktop, overridden by media queries for mobile
-        padding: '2rem',
-        minHeight: 'calc(100vh - 70px)',
-        transition: 'margin-left var(--transition-normal)'
-      }} className="main-content">
+      <main className="main-content">
         {children}
       </main>
     </div>
