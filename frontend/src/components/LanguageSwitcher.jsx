@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../hooks/useTheme';
 import { Globe } from 'lucide-react';
 
 /**
@@ -9,6 +10,7 @@ import { Globe } from 'lucide-react';
  */
 const LanguageSwitcher = ({ variant = 'dropdown' }) => {
     const { language, setLanguage } = useLanguage();
+    const { theme } = useTheme();
 
     const languages = [
         { code: 'en', name: 'English', flag: '🇬🇧', native: 'English' },
@@ -83,7 +85,7 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
         );
     }
 
-    // Dropdown variant
+    // Dropdown variant with improved dark mode support
     return (
         <div style={{ position: 'relative' }}>
             <select
@@ -94,31 +96,38 @@ const LanguageSwitcher = ({ variant = 'dropdown' }) => {
                     alignItems: 'center',
                     gap: '0.5rem',
                     padding: '0.5rem 2rem 0.5rem 0.75rem',
-                    backgroundColor: 'var(--lang-bg)',
-                    border: '1px solid var(--lang-border)',
+                    backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(51, 65, 85, 0.9)',
+                    border: theme === 'light' ? '1px solid rgba(203, 213, 225, 0.5)' : '1px solid rgba(100, 116, 139, 0.5)',
                     borderRadius: 'var(--radius-md)',
-                    color: 'var(--lang-text)',
+                    color: theme === 'light' ? '#1e293b' : '#cbd5e1',
                     fontSize: '0.875rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)',
                     appearance: 'none',
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23${'var(--icon-color)'}' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23${theme === 'light' ? '4F46E5' : '94a3b8'}' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'right 0.75rem center',
                     minWidth: '180px',
                 }}
                 onMouseOver={e => {
-                    e.currentTarget.style.backgroundColor = 'var(--lang-bg-hover)';
+                    e.currentTarget.style.backgroundColor = theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(71, 85, 105, 0.9)';
                     e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
                 }}
                 onMouseOut={e => {
-                    e.currentTarget.style.backgroundColor = 'var(--lang-bg)';
+                    e.currentTarget.style.backgroundColor = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(51, 65, 85, 0.9)';
                     e.currentTarget.style.boxShadow = 'none';
                 }}
             >
                 {languages.map(lang => (
-                    <option key={lang.code} value={lang.code}>
+                    <option 
+                        key={lang.code} 
+                        value={lang.code}
+                        style={{
+                            background: theme === 'light' ? '#ffffff' : '#1e293b',
+                            color: theme === 'light' ? '#1e293b' : '#f1f5f9'
+                        }}
+                    >
                         {lang.flag} {lang.native} ({lang.name})
                     </option>
                 ))}

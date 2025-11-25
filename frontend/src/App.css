@@ -1,0 +1,258 @@
+/* ============================================
+   LIGHT AND DARK MODE VISIBILITY FIXES
+   ============================================ */
+
+/* Light Mode - Bright background with dark text */
+html:not(.dark) {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #1e293b;
+    --text-tertiary: #475569;
+    --border-color: #e2e8f0;
+    --accent-primary: #0891b2;
+    --accent-secondary: #06b6d4;
+}
+
+/* Dark Mode - Dark background with light text + gradient */
+html.dark {
+    --bg-primary: linear-gradient(180deg, #1a2332 0%, #0f172a 100%);
+    --bg-secondary: linear-gradient(180deg, #2a3f52 0%, #1e293b 100%);
+    --bg-tertiary: linear-gradient(180deg, #3d5568 0%, #334155 100%);
+    --text-primary: #f1f5f9;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #cbd5e1;
+    --border-color: #475569;
+    --accent-primary: #67e8f9;
+    --accent-secondary: #22d3ee;
+}
+
+/* Mobile Responsive Styles */
+
+/* Logo styles */
+.nav-logo {
+    transition: filter 0.3s ease;
+    display: block;
+    filter: none;
+}
+
+/* Dark mode logo - Complete inversion for SVG visibility */
+html.dark .nav-logo {
+    filter: brightness(0) invert(1) contrast(1.2) saturate(0.8) !important;
+}
+
+.dark .nav-logo {
+    filter: brightness(0) invert(1) contrast(1.2) saturate(0.8) !important;
+}
+
+/* SVG text elements - Make text white in dark mode */
+html.dark .nav-logo text,
+.dark .nav-logo text {
+    fill: white !important;
+}
+
+/* SVG path elements - White fill for dark mode */
+html.dark .nav-logo path,
+.dark .nav-logo path {
+    fill: white !important;
+    stroke: white !important;
+}
+
+/* SVG g (group) elements - White for dark mode */
+html.dark .nav-logo g,
+.dark .nav-logo g {
+    fill: white !important;
+    stroke: white !important;
+}
+
+/* SVG rect elements */
+html.dark .nav-logo rect,
+.dark .nav-logo rect {
+    fill: white !important;
+    stroke: white !important;
+}
+
+/* SVG circle elements */
+html.dark .nav-logo circle,
+.dark .nav-logo circle {
+    fill: white !important;
+    stroke: white !important;
+}
+
+/* Ensure logo image is always visible */
+img.nav-logo {
+    opacity: 1 !important;
+    mix-blend-mode: normal;
+}
+
+/* SVG tag itself */
+html.dark svg.nav-logo,
+.dark svg.nav-logo {
+    filter: brightness(0) invert(1) contrast(1.2) saturate(0.8) !important;
+}
+
+/* Language dropdown styling */
+.nav-language-select {
+    min-width: 150px;
+    max-width: 200px;
+    position: relative;
+}
+
+.nav-language-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.nav-language-select::-webkit-scrollbar-track {
+    background: rgba(241, 245, 249, 0.5);
+    border-radius: 4px;
+}
+
+.nav-language-select::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+    border-radius: 4px;
+}
+
+.nav-language-select::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+}
+
+.dark .nav-language-select::-webkit-scrollbar-track {
+    background: rgba(51, 65, 85, 0.5);
+}
+
+.dark .nav-language-select::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+}
+
+@media (max-width: 768px) {
+    .nav-language-select {
+        min-width: 100px !important;
+        max-width: 120px !important;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 1.5rem 0.4rem 0.5rem !important;
+    }
+
+    .nav-theme-toggle {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .nav-login-btn {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.65rem !important;
+    }
+
+    .nav-register-btn {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.75rem !important;
+    }
+
+    .app-navbar {
+        padding: 0.5rem 1rem !important;
+    }
+
+    .nav-actions {
+        gap: 0.35rem !important;
+    }
+}
+
+/* Keyframe Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(10px, -10px) scale(1.05);
+    }
+
+    50% {
+        transform: translate(-10px, 10px) scale(0.95);
+    }
+
+    75% {
+        transform: translate(-10px, -10px) scale(1.02);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Logo size adjustments for mobile */
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 60px !important;
+        width: auto !important;
+    }
+
+    /* Hide Get Started button on mobile */
+    .nav-getstarted-btn {
+        display: none !important;
+    }
+
+    /* Adjust button sizes for mobile */
+    .nav-login-btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo {
+        height: 70px !important;
+        width: auto !important;
+    }
+}
+
+/* Dark Mode Enhancements */
+html.dark {
+    color-scheme: dark;
+}
+
+html.dark * {
+    color-scheme: dark;
+}
+
+/* Smooth Transitions */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+/* ScrollBar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0891b2 0%, #06b6d4 100%);
+    border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #67e8f9 0%, #22d3ee 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #0e7490 0%, #0891b2 100%);
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+}

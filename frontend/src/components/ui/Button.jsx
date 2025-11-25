@@ -1,7 +1,8 @@
 import React from 'react';
+import { useTheme } from '../../hooks/useTheme';
 
 /**
- * Button component with inline styles (Tailwind-ready)
+ * Button component with inline styles and dark mode support
  */
 const Button = ({
   children,
@@ -12,6 +13,8 @@ const Button = ({
   disabled = false,
   ...props
 }) => {
+  const { theme } = useTheme();
+
   const baseStyles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -27,23 +30,23 @@ const Button = ({
 
   const variantStyles = {
     primary: {
-      backgroundColor: '#0d9488',
+      background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 100%)',
       color: 'white',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      boxShadow: '0 4px 6px -1px rgba(8, 145, 178, 0.3), 0 2px 4px -1px rgba(8, 145, 178, 0.2)',
     },
     secondary: {
-      backgroundColor: '#4f46e5',
+      background: 'linear-gradient(135deg, #9333ea 0%, #a855f7 100%)',
       color: 'white',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      boxShadow: '0 4px 6px -1px rgba(147, 51, 234, 0.3), 0 2px 4px -1px rgba(147, 51, 234, 0.2)',
     },
     outline: {
-      backgroundColor: 'transparent',
-      border: '2px solid #cbd5e1',
-      color: '#334155',
+      backgroundColor: theme === 'light' ? 'transparent' : 'rgba(103, 232, 249, 0.1)',
+      border: theme === 'light' ? '2px solid #cbd5e1' : '2px solid rgba(103, 232, 249, 0.3)',
+      color: theme === 'light' ? '#334155' : '#67e8f9',
     },
     ghost: {
       backgroundColor: 'transparent',
-      color: '#334155',
+      color: theme === 'light' ? '#334155' : '#67e8f9',
     },
     danger: {
       backgroundColor: '#dc2626',
@@ -67,17 +70,23 @@ const Button = ({
 
   const handleMouseEnter = (e) => {
     if (disabled || isLoading) return;
-    if (variant === 'primary') e.currentTarget.style.backgroundColor = '#0a6b62';
-    if (variant === 'secondary') e.currentTarget.style.backgroundColor = '#4338ca';
-    if (variant === 'outline') e.currentTarget.style.backgroundColor = '#f8fafc';
-    if (variant === 'ghost') e.currentTarget.style.backgroundColor = '#f1f5f9';
+    if (variant === 'primary') e.currentTarget.style.background = 'linear-gradient(135deg, #0e7490 0%, #0891b2 100%)';
+    if (variant === 'secondary') e.currentTarget.style.background = 'linear-gradient(135deg, #7e22ce 0%, #9333ea 100%)';
+    if (variant === 'outline') {
+      e.currentTarget.style.backgroundColor = theme === 'light' ? '#f8fafc' : 'rgba(103, 232, 249, 0.2)';
+    }
+    if (variant === 'ghost') {
+      e.currentTarget.style.backgroundColor = theme === 'light' ? '#f1f5f9' : 'rgba(103, 232, 249, 0.1)';
+    }
     e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+    e.currentTarget.style.boxShadow = theme === 'light'
+      ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+      : '0 10px 15px -3px rgba(103, 232, 249, 0.2)';
   };
 
   const handleMouseLeave = (e) => {
     if (disabled || isLoading) return;
-    e.currentTarget.style.backgroundColor = variantStyles[variant].backgroundColor || 'transparent';
+    e.currentTarget.style.background = variantStyles[variant].background || variantStyles[variant].backgroundColor || 'transparent';
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = variantStyles[variant].boxShadow || 'none';
   };

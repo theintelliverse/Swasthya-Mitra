@@ -14,11 +14,13 @@ import {
     X
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useTheme } from '../../hooks/useTheme';
 
 const Sidebar = ({ role = 'doctor' }) => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const { t, getLogo } = useLanguage();
+    const { theme } = useTheme();
 
     const getLinks = () => {
         switch (role) {
@@ -86,9 +88,14 @@ const Sidebar = ({ role = 'doctor' }) => {
                 style={{
                     width: '260px',
                     height: '100vh',
-                    backgroundColor: 'var(--glass-bg)',
-                    backdropFilter: 'var(--backdrop-blur)',
-                    borderRight: '1px solid var(--glass-border)',
+                    background: theme === 'light'
+                        ? '#ffffff'
+                        : 'linear-gradient(135deg, #0f172a 0%, #1a2e4a 50%, #0d2a3d 100%)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    borderRight: theme === 'light'
+                        ? '1px solid #e2e8f0'
+                        : '1px solid rgba(103, 232, 249, 0.2)',
                     display: 'flex',
                     flexDirection: 'column',
                     position: 'fixed',
@@ -99,7 +106,7 @@ const Sidebar = ({ role = 'doctor' }) => {
                     // Transform logic handled by CSS class in index.css for cleaner responsive behavior
                 }}
             >
-                <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--slate-100)' }}>
+                <div style={{ padding: '1.5rem', borderBottom: theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)' }}>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',

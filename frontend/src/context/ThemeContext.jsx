@@ -1,26 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
 /**
  * Manages light/dark preference and syncs it with localStorage + <html> class.
  */
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState(() => {
+        // Initialize theme from localStorage on mount
+        return localStorage.getItem('theme') || 'light';
+    });
 
     useEffect(() => {
-        // Rehydrate persisted theme on first paint so UI does not flicker
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        setTheme(savedTheme);
-        document.documentElement.className = savedTheme;
-    }, []);
+        // Apply theme to document on mount and whenever it changes
+        document.documentElement.className = theme;
+        localStorage.setItem('theme', theme);
+    }, [theme]);
 
     const toggleTheme = () => {
         // Flip theme and immediately persist + apply to document root
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        document.documentElement.className = newTheme;
     };
 
     return (
@@ -29,5 +29,3 @@ export const ThemeProvider = ({ children }) => {
         </ThemeContext.Provider>
     );
 };
-
-export const useTheme = () => useContext(ThemeContext);

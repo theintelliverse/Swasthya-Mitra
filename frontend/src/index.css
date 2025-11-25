@@ -1,13 +1,19 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+    --font-display: 'Outfit', 'Inter', sans-serif;
+}
 
 @layer base {
     body {
-        @apply font-sans bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen;
-        @apply antialiased;
+        @apply font-sans text-slate-900 antialiased;
+        background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+    }
+
+    body.dark {
+        @apply dark:text-slate-100;
+        background: linear-gradient(180deg, #1a2332 0%, #0f172a 50%, #081529 100%) !important;
     }
 
     h1,
@@ -16,7 +22,8 @@
     h4,
     h5,
     h6 {
-        @apply font-display font-bold text-slate-900 dark:text-white;
+        font-family: var(--font-display);
+        @apply font-bold text-slate-900 dark:text-white;
     }
 }
 
