@@ -1,0 +1,12 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and auth routes from search indexing
+Disallow: /admin/
+Disallow: /staff/
+Disallow: /doctor/setup
+Disallow: /staff/setup-password
+
+# Sitemap location (update with actual domain when deployed)
+# Sitemap: https://yourdomain.com/sitemap.xml

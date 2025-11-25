@@ -1,16 +1,22 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+// LANDING
+import LandingPage from "./pages/LandingPage";
+
 // AUTH PAGES
 import LoginPage from "./pages/auth/LoginPage";
 import OTPVerifyPage from "./pages/auth/OTPVerifyPage";
+import RegisterSelectPage from "./pages/auth/RegisterSelectPage";
 import RegisterPatientSelfPage from "./pages/auth/RegisterPatientSelfPage";
+import RegisterDoctorPage from "./pages/auth/RegisterDoctorPage";
+import RegisterStaffPage from "./pages/auth/RegisterStaffPage";
 import RegisterDoctorSetupPage from "./pages/auth/RegisterDoctorSetupPage";
 import SetupStaffPasswordPage from "./pages/auth/SetupStaffPasswordPage";
 import SelectProfilePage from "./pages/auth/SelectProfilePage";
 
 // ADMIN PAGES
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminDashboard from "./pages/admin/AdminDashboardPage";
 import ManageStaffPage from "./pages/admin/ManageStaffPage";
 import ManageDoctorsPage from "./pages/admin/ManageDoctorsPage";
 import ManageClinicSettingsPage from "./pages/admin/ManageClinicSettingsPage";
@@ -43,48 +49,50 @@ const App = () => {
   return (
     <Router>
       <Routes>
-
         {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<LandingPage />} />
 
-        {/* AUTH ROUTES */}
+        {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/otp" element={<OTPVerifyPage />} />
+        <Route path="/register" element={<RegisterSelectPage />} />
+        <Route path="/register/patient" element={<RegisterPatientSelfPage />} />
         <Route path="/register/self" element={<RegisterPatientSelfPage />} />
-        <Route path="/doctor/setup" element={<RegisterDoctorSetupPage />} />
+        <Route path="/register/doctor" element={<RegisterDoctorPage />} />
+        <Route path="/register/staff" element={<RegisterStaffPage />} />
+        <Route path="/register/doctor-setup" element={<RegisterDoctorSetupPage />} />
         <Route path="/staff/setup-password" element={<SetupStaffPasswordPage />} />
         <Route path="/select-profile" element={<SelectProfilePage />} />
 
-        {/* ADMIN ROUTES */}
-        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/manage-staff" element={<ManageStaffPage />} />
         <Route path="/admin/manage-doctors" element={<ManageDoctorsPage />} />
         <Route path="/admin/settings" element={<ManageClinicSettingsPage />} />
         <Route path="/admin/clinics" element={<ClinicListPage />} />
 
-        {/* DOCTOR ROUTES */}
+        {/* Doctor Routes */}
         <Route path="/doctor/dashboard" element={<DoctorDashboardPage />} />
         <Route path="/doctor/queue" element={<DoctorQueuePage />} />
         <Route path="/doctor/patient-history" element={<DoctorPatientHistoryPage />} />
         <Route path="/doctor/profile" element={<DoctorProfilePage />} />
 
-        {/* STAFF ROUTES */}
+        {/* Staff Routes */}
         <Route path="/staff/dashboard" element={<StaffDashboardPage />} />
         <Route path="/staff/add-patient" element={<AddWalkInPatientPage />} />
         <Route path="/staff/manage-queue" element={<ManageQueuePage />} />
         <Route path="/staff/search" element={<PatientSearchPage />} />
         <Route path="/staff/patient-profile" element={<StaffPatientProfilePage />} />
 
-        {/* PATIENT ROUTES */}
+        {/* Patient Routes */}
         <Route path="/patient/dashboard" element={<PatientDashboardPage />} />
         <Route path="/patient/bookings" element={<PatientBookingsPage />} />
         <Route path="/patient/profile" element={<UserPatientProfilePage />} />
 
-        {/* SYSTEM ROUTES */}
+        {/* System Routes */}
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
-
       </Routes>
     </Router>
   )
