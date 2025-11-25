@@ -24,10 +24,18 @@
     <path fill="#155a6fd0" opacity="1.000000" stroke="none" d="M529.010193,619.739502 C528.775391,617.125427 529.901917,615.962402 532.039551,615.844055 C533.480591,615.764282 534.600403,616.453369 535.013611,617.890320 C535.460327,619.444092 535.144653,620.899780 533.639954,621.700745 C531.670898,622.748718 530.211853,621.880981 529.010193,619.739502 z"/>
     <path fill="#155a6fd0" opacity="1.000000" stroke="none" d="M633.214355,577.904541 C627.033264,587.753601 615.688782,588.916260 607.845825,580.867798 C606.603210,579.592529 605.558899,577.784424 606.472168,576.390015 C608.653625,573.058960 607.765320,569.941956 606.955200,566.546692 C606.181824,563.305298 607.653076,560.655029 610.445251,558.895020 C612.836426,557.387817 615.348083,556.073242 617.781860,554.631897 C619.375488,553.688110 620.825989,553.707397 622.441833,554.717834 C624.692017,556.125000 627.050903,557.364990 629.403259,558.600403 C632.599365,560.278992 634.645447,562.387817 632.200806,566.083374 C631.252075,567.517639 631.941528,568.592651 632.550476,569.767273 C633.841064,572.256897 633.939087,574.859558 633.214355,577.904541 z"/>
   </g>
-  <text x="90" y="55" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="22" font-weight="700" fill="#0F172A">
+  <text x="90" y="50" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="22" font-weight="700" fill="#0F172A">
     Swasthya-Mitra
   </text>
-  <text x="90" y="73" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="9" fill="#475569">
-    Swasthya-Mitra patient line chamani o, AI wait time gwswla okrang ni tahar hamjakba digital doksa.
+  <text x="90" y="60" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="7" fill="#475569">
+    <tspan x="90" dy="0">
+      Swasthya-Mitra patient line chamani o,
+    </tspan>
+    <tspan x="90" dy="9">
+      AI wait time gwswla okrang
+    </tspan>
+    <tspan x="90" dy="9">
+      ni tahar hamjakba digital doksa.
+    </tspan>
   </text>
 </svg>

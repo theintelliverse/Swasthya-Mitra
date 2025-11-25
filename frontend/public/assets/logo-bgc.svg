@@ -27,7 +27,15 @@
   <text x="90" y="50" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="22" font-weight="700" fill="#0F172A">
     स्वास्थ्य-मितर
   </text>
-  <text x="90" y="73" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="9" fill="#475569">
-    स्वास्थ्य-मितर मरीज कतार सँभालै तै लइके AI इंतजार समा बतावै तक सब काम करै।
+  <text x="90" y="60" font-family="'Noto Sans Devanagari', 'Mangal', 'Noto Sans Bengali', 'Noto Sans', sans-serif" font-size="7" fill="#475569">
+    <tspan x="90" dy="0">
+      स्वास्थ्य-मितर मरीज कतार सँभालै
+    </tspan>
+    <tspan x="90" dy="9">
+      तै लइके AI इंतजार समा
+    </tspan>
+    <tspan x="90" dy="9">
+      बतावै तक सब काम करै।
+    </tspan>
   </text>
 </svg>
