@@ -3,13 +3,14 @@ import Layout from '../../components/layout/Layout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { Users, Clock, Activity, Calendar, ArrowRight, AlertTriangle } from 'lucide-react';
-import { api } from '../../services/api';
+import api from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
 
 const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
   const { theme } = useTheme();
-  
+
   return (
     <Card>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -24,11 +25,11 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
           <div style={{
             padding: '0.75rem',
             borderRadius: 'var(--radius-lg)',
-            backgroundColor: theme === 'light' 
-              ? `var(--${color}-50)` 
+            backgroundColor: theme === 'light'
+              ? `var(--${color}-50)`
               : 'rgba(103, 232, 249, 0.1)',
-            color: theme === 'light' 
-              ? `var(--${color}-600)` 
+            color: theme === 'light'
+              ? `var(--${color}-600)`
               : '#67e8f9'
           }}>
             <Icon size={24} />
@@ -44,27 +45,33 @@ const DoctorDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const { selectedProfile } = useAuth();
 
   const toggleEmergency = async () => {
     setIsLoading(true);
-    // Simulate API call
-    await api.doctor.toggleEmergency(!isEmergency);
-    setIsEmergency(!isEmergency);
-    setIsLoading(false);
+    try {
+      // Simulate API call
+      await api.doctor.toggleEmergency(!isEmergency);
+      setIsEmergency(!isEmergency);
+    } catch (error) {
+      console.error("Failed to toggle emergency", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Layout>
       <div className="dashboard-header">
         <div>
-          <h1 style={{ 
-            fontSize: '1.875rem', 
-            marginBottom: '0.5rem', 
-            color: theme === 'light' ? '#0f172a' : '#f1f5f9' 
+          <h1 style={{
+            fontSize: '1.875rem',
+            marginBottom: '0.5rem',
+            color: theme === 'light' ? '#0f172a' : '#f1f5f9'
           }}>
-            {t('goodMorning')}, Dr. Sharma
+            {t('goodMorning')}, {selectedProfile?.name || 'Doctor'}
           </h1>
-          <p style={{ 
+          <p style={{
             color: theme === 'light' ? '#64748b' : '#cbd5e1',
             fontSize: '1rem'
           }}>
@@ -111,15 +118,15 @@ const DoctorDashboardPage = () => {
 
       <div className="dashboard-grid-2-1">
         <Card>
-      <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
-        <h3 style={{ 
-          fontSize: '1.25rem', 
-          color: theme === 'light' ? '#0f172a' : '#f1f5f9' 
-        }}>
-          Current Queue
-        </h3>
-        <Button variant="outline" size="sm">View All</Button>
-      </div>
+          <div className="dashboard-header" style={{ marginBottom: '1.5rem' }}>
+            <h3 style={{
+              fontSize: '1.25rem',
+              color: theme === 'light' ? '#0f172a' : '#f1f5f9'
+            }}>
+              Current Queue
+            </h3>
+            <Button variant="outline" size="sm">View All</Button>
+          </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {[1, 2, 3].map((i) => (

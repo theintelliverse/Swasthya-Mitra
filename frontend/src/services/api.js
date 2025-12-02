@@ -1,73 +1,157 @@
-// Mock API Service
-// Replace these with real fetch/axios calls when connecting to backend
+// API Service for Swasthya-Mitra
+// Connects frontend to backend API
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+// Helper function to get auth token
+const getAuthToken = () => {
+    return localStorage.getItem('accessToken');
+};
+
+// Helper function to handle API responses
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Request failed' }));
+        throw new Error(error.error || error.message || 'Request failed');
+    }
+    return response.json();
+};
+
+// Helper function to make authenticated requests
+const authFetch = async (url, options = {}) => {
+    const token = getAuthToken();
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers,
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}${url}`, {
+        ...options,
+        headers,
+    });
+
+    return handleResponse(response);
+};
 
 export const api = {
+    // Authentication endpoints
     auth: {
-        login: async (credentials) => {
-            await delay(1000);
-            return {
-                success: true,
-                user: {
-                    id: '1',
-                    name: 'Demo User',
-                    role: credentials.role || 'patient'
-                },
-                token: 'mock-jwt-token'
-            };
+        sendOtp: async (phone) => {
+            const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone }),
+            });
+            return handleResponse(response);
         },
+
+        verifyOtp: async (phone, otpCode, otpId) => {
+            const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, otpCode, otpId }),
+            });
+            return handleResponse(response);
+        },
+
+        login: async (phoneOrEmail, password) => {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneOrEmail, password }),
+            });
+            return handleResponse(response);
+        },
+
         register: async (data) => {
-            await delay(1000);
-            return { success: true, message: 'Registration successful' };
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
         },
-        verifyOtp: async (otp) => {
-            await delay(800);
-            return { success: true, message: 'OTP Verified' };
-        }
-    },
-    doctor: {
-        getStats: async (doctorId) => {
-            await delay(500);
-            return {
-                patientsInQueue: 12,
-                avgWaitTime: '18m',
-                totalPatients: 45,
-                appointments: 8
-            };
+
+        logout: async () => {
+            try {
+                await authFetch('/auth/logout', { method: 'POST' });
+            } finally {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                localStorage.removeItem('userId');
+            }
         },
-        toggleEmergency: async (status) => {
-            await delay(500);
-            return { success: true, isEmergency: status };
-        }
     },
-    patient: {
-        getDashboard: async (patientId) => {
-            await delay(500);
-            return {
-                upcoming: {
-                    doctor: 'Dr. Sharma',
-                    time: '10:30 AM',
-                    wait: '15 mins',
-                    position: 3
-                },
-                vitals: {
-                    bp: '120/80',
-                    heartRate: '72 bpm',
-                    weight: '70 kg'
-                }
-            };
-        }
+
+    // User endpoints
+    user: {
+        getMe: async () => {
+            return authFetch('/me');
+        },
     },
-    admin: {
-        getStats: async () => {
-            await delay(500);
-            return {
-                totalClinics: 5,
-                activeDoctors: 12,
-                totalPatients: 150,
-                systemHealth: 'Good'
-            };
-        }
-    }
+
+    // Clinic endpoints
+    clinic: {
+        create: async (name, address) => {
+            return authFetch('/clinics', {
+                method: 'POST',
+                body: JSON.stringify({ name, address }),
+            });
+        },
+
+        addUser: async (clinicId, userId, role, permissions = []) => {
+            return authFetch('/clinic-user', {
+                method: 'POST',
+                body: JSON.stringify({ clinicId, userId, role, permissions }),
+            });
+        },
+    },
+
+    // Queue endpoints
+    queue: {
+        add: async (clinicId, doctorUserId, patientProfileId, appointmentId = null) => {
+            return authFetch('/queue/add', {
+                method: 'POST',
+                body: JSON.stringify({ clinicId, doctorUserId, patientProfileId, appointmentId }),
+            });
+        },
+
+        getStatus: async (clinicId, doctorId) => {
+            return authFetch(`/queue/status?clinicId=${clinicId}&doctorId=${doctorId}`);
+        },
+
+        next: async (clinicId, doctorUserId) => {
+            return authFetch('/queue/next', {
+                method: 'POST',
+                body: JSON.stringify({ clinicId, doctorUserId }),
+            });
+        },
+
+        skip: async (queueId) => {
+            return authFetch('/queue/skip', {
+                method: 'POST',
+                body: JSON.stringify({ queueId }),
+            });
+        },
+
+        recall: async (queueId) => {
+            return authFetch('/queue/recall', {
+                method: 'POST',
+                body: JSON.stringify({ queueId }),
+            });
+        },
+
+        complete: async (queueId) => {
+            return authFetch('/queue/complete', {
+                method: 'POST',
+                body: JSON.stringify({ queueId }),
+            });
+        },
+    },
 };
+
+export default api;

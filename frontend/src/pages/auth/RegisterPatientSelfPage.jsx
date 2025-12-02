@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Phone, Calendar, ArrowRight, Home } from 'lucide-react';
+import { User, Phone, Mail, Lock, ArrowRight, Home } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Card from '../../components/ui/Card';
+import api from '../../services/api';
 
 /**
  * RegisterPatientSelfPage Component
@@ -16,18 +17,26 @@ const RegisterPatientSelfPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    age: ''
+    email: '',
+    password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setError('');
+
+    try {
+      await api.auth.register(formData);
+      // After registration, redirect to login
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Registration failed');
+    } finally {
       setIsLoading(false);
-      navigate('/otp');
-    }, 1000);
+    }
   };
 
   return (
@@ -99,14 +108,36 @@ const RegisterPatientSelfPage = () => {
             required
           />
           <Input
-            label="Age"
-            type="number"
-            placeholder="Enter your age"
-            icon={Calendar}
-            value={formData.age}
-            onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+            label="Email Address"
+            type="email"
+            placeholder="Enter your email"
+            icon={Mail}
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Create a password"
+            icon={Lock}
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
+          />
+
+          {error && (
+            <div style={{
+              marginTop: '0.75rem',
+              padding: '0.75rem',
+              backgroundColor: '#fee2e2',
+              color: '#991b1b',
+              borderRadius: 'var(--radius-md)',
+              fontSize: '0.875rem'
+            }}>
+              {error}
+            </div>
+          )}
 
           <Button
             type="submit"
@@ -114,7 +145,7 @@ const RegisterPatientSelfPage = () => {
             style={{ width: '100%', marginTop: '1rem' }}
             isLoading={isLoading}
           >
-            Register & Get OTP <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
+            Register <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
           </Button>
         </form>
 

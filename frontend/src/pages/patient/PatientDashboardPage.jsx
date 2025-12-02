@@ -4,20 +4,22 @@ import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { Calendar, Clock, MapPin, Plus, FileText, Activity, Utensils } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
 
 const PatientDashboardPage = () => {
   const { theme } = useTheme();
-  
+  const { selectedProfile, user } = useAuth();
+
   return (
     <Layout role="patient">
       <div className="dashboard-header">
         <div>
-          <h1 style={{ 
-            fontSize: '1.875rem', 
+          <h1 style={{
+            fontSize: '1.875rem',
             marginBottom: '0.5rem',
             color: theme === 'light' ? '#0f172a' : '#f1f5f9'
-          }}>Hello, Rajesh</h1>
-          <p style={{ 
+          }}>Hello, {selectedProfile?.name || user?.phone || 'Patient'}</h1>
+          <p style={{
             color: theme === 'light' ? '#64748b' : '#cbd5e1',
             fontSize: '1rem'
           }}>Manage your health and appointments.</p>
@@ -63,20 +65,20 @@ const PatientDashboardPage = () => {
             </div>
           </Card>
 
-          <h3 style={{ 
-            fontSize: '1.25rem', 
-            fontWeight: 600, 
+          <h3 style={{
+            fontSize: '1.25rem',
+            fontWeight: 600,
             color: theme === 'light' ? '#0f172a' : '#f1f5f9',
             marginTop: '1.5rem'
           }}>Health Records</h3>
           <Card>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', borderBottom: theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ 
-                  padding: '0.75rem', 
-                  backgroundColor: theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.1)', 
-                  color: theme === 'light' ? '#0891b2' : '#67e8f9', 
-                  borderRadius: 'var(--radius-md)' 
+                <div style={{
+                  padding: '0.75rem',
+                  backgroundColor: theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.1)',
+                  color: theme === 'light' ? '#0891b2' : '#67e8f9',
+                  borderRadius: 'var(--radius-md)'
                 }}>
                   <FileText size={20} />
                 </div>
@@ -89,11 +91,11 @@ const PatientDashboardPage = () => {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ 
-                  padding: '0.75rem', 
-                  backgroundColor: theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.1)', 
-                  color: theme === 'light' ? '#0891b2' : '#67e8f9', 
-                  borderRadius: 'var(--radius-md)' 
+                <div style={{
+                  padding: '0.75rem',
+                  backgroundColor: theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.1)',
+                  color: theme === 'light' ? '#0891b2' : '#67e8f9',
+                  borderRadius: 'var(--radius-md)'
                 }}>
                   <FileText size={20} />
                 </div>

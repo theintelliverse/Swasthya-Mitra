@@ -4,13 +4,14 @@ import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { Users, Clock, UserPlus, Search, ArrowRight, Activity, Calendar } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
 
 const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
   const { theme } = useTheme();
-  
+
   return (
     <Card>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
           <p style={{ color: theme === 'light' ? '#64748b' : '#cbd5e1', fontSize: '0.875rem', fontWeight: 500 }}>{title}</p>
           <h3 style={{ fontSize: '1.75rem', fontWeight: 700, marginTop: '0.25rem', color: theme === 'light' ? '#0f172a' : '#f1f5f9' }}>{value}</h3>
@@ -22,11 +23,11 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
           <div style={{
             padding: '0.75rem',
             borderRadius: 'var(--radius-lg)',
-            backgroundColor: theme === 'light' 
-              ? `var(--${color}-50)` 
+            backgroundColor: theme === 'light'
+              ? `var(--${color}-50)`
               : 'rgba(103, 232, 249, 0.1)',
-            color: theme === 'light' 
-              ? `var(--${color}-600)` 
+            color: theme === 'light'
+              ? `var(--${color}-600)`
               : '#67e8f9'
           }}>
             <Icon size={24} />
@@ -40,19 +41,20 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => {
 const StaffDashboardPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme } = useTheme();
+  const { selectedProfile } = useAuth();
 
   return (
     <Layout role="staff">
       <div className="dashboard-header">
         <div>
-          <h1 style={{ 
-            fontSize: '1.875rem', 
-            marginBottom: '0.5rem', 
-            color: theme === 'light' ? '#0f172a' : '#f1f5f9' 
+          <h1 style={{
+            fontSize: '1.875rem',
+            marginBottom: '0.5rem',
+            color: theme === 'light' ? '#0f172a' : '#f1f5f9'
           }}>
-            Good Morning, Priya
+            Good Morning, {selectedProfile?.name || 'Staff'}
           </h1>
-          <p style={{ 
+          <p style={{
             color: theme === 'light' ? '#64748b' : '#cbd5e1',
             fontSize: '1rem'
           }}>
@@ -88,7 +90,7 @@ const StaffDashboardPage = () => {
               ].map((patient) => (
                 <div key={patient.token} className="queue-item" style={{
                   backgroundColor: theme === 'light' ? '#f8fafc' : 'rgba(103, 232, 249, 0.05)',
-                  border: patient.status === 'In Progress' 
+                  border: patient.status === 'In Progress'
                     ? theme === 'light' ? '2px solid #0891b2' : '2px solid #67e8f9'
                     : theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(103, 232, 249, 0.1)',
                 }}>
@@ -97,10 +99,10 @@ const StaffDashboardPage = () => {
                       width: '40px',
                       height: '40px',
                       borderRadius: '50%',
-                      backgroundColor: patient.status === 'In Progress' 
+                      backgroundColor: patient.status === 'In Progress'
                         ? theme === 'light' ? '#0891b2' : '#67e8f9'
                         : theme === 'light' ? '#f0fdfa' : 'rgba(103, 232, 249, 0.2)',
-                      color: patient.status === 'In Progress' 
+                      color: patient.status === 'In Progress'
                         ? 'white'
                         : theme === 'light' ? '#0891b2' : '#67e8f9',
                       display: 'flex',
