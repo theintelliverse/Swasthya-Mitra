@@ -25,49 +25,48 @@ const Navbar = () => {
         return () => window.removeEventListener('resize', updateCompact);
     }, []);
 
-    const controlGap = isCompact ? '0.5rem' : 'clamp(0.75rem, 1.5vw, 1.25rem)';
-    const iconButtonSize = isCompact ? 'clamp(34px, 9vw, 40px)' : 'clamp(36px, 8vw, 44px)';
+    const iconButtonSize = '2.5rem';
+    const controlGap = '0.5rem';
+    const logoSize = 'clamp(35px, 5vw, 45px)';
 
     return (
-        <header 
-            className="dashboard-navbar"
-            style={{
-            height: 'clamp(60px, 10vw, 70px)',
-            background: theme === 'light' 
-                ? 'rgba(255, 255, 255, 0.95)' 
-                : 'linear-gradient(90deg, rgba(8, 145, 178, 0.05) 0%, rgba(26, 35, 50, 0.92) 50%, rgba(15, 23, 42, 0.95) 100%)',
-            color: theme === 'light' ? '#0f172a' : '#f1f5f9',
-            transition: 'background-color 0.3s ease',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            borderBottom: theme === 'light' 
-                ? '1px solid rgba(255, 255, 255, 0.2)' 
-                : '1px solid rgba(103, 232, 249, 0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 'clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 2vw, 2rem)',
-            position: 'sticky',
-            top: 0,
-            zIndex: 40,
-            overflow: 'hidden',
-            boxSizing: 'border-box',
-            maxWidth: '100%',
-        }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 1rem)', minWidth: 'auto', flexShrink: 0 }}>
+        <header>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: controlGap,
+                    padding: '0.5rem',
+                    backgroundColor: theme === 'light' ? '#f1f5f9' : 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    boxShadow: theme === 'light'
+                        ? '0 2px 8px rgba(0, 0, 0, 0.05)'
+                        : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    zIndex: 10,
+                }}
+            />
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: controlGap,
+                    minWidth: 0,
+                    flex: '0 0 auto',
+                }}
+            >
                 <img
                     src={getLogo()}
-                    alt="Swasthya-Mitra"
-                    className="nav-logo"
-                    style={{ 
-                        height: 'clamp(35px, 5vw, 45px)', 
+                    alt="Logo"
+                    style={{
+                        height: logoSize,
                         width: 'auto'
                     }}
                     onError={(e) => {
                         e.currentTarget.src = '/assets/logo-en.svg';
                     }}
                 />
-            </div>
+            </div >
 
             <div
                 style={{
@@ -92,12 +91,12 @@ const Navbar = () => {
                             maxWidth: 'min(260px, 100%)'
                         }}
                     >
-                        <Search size={20} style={{ 
-                            position: 'absolute', 
-                            left: '0.75rem', 
-                            top: '50%', 
-                            transform: 'translateY(-50%)', 
-                            color: theme === 'light' ? '#64748b' : '#cbd5e1' 
+                        <Search size={20} style={{
+                            position: 'absolute',
+                            left: '0.75rem',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            color: theme === 'light' ? '#64748b' : '#cbd5e1'
                         }} />
                         <input
                             type="text"
@@ -148,14 +147,14 @@ const Navbar = () => {
                 />
 
                 {/* Theme toggle */}
-                <button 
-                    onClick={toggleTheme} 
-                    style={{ 
+                <button
+                    onClick={toggleTheme}
+                    style={{
                         width: iconButtonSize,
                         height: iconButtonSize,
                         borderRadius: '0.625rem',
                         flexShrink: 0,
-                        background: theme === 'light' 
+                        background: theme === 'light'
                             ? '#f1f5f9'
                             : 'rgba(255, 255, 255, 0.3)',
                         border: theme === 'light' ? '1.5px solid #cbd5e1' : '1.5px solid rgba(255, 255, 255, 0.5)',
@@ -180,11 +179,11 @@ const Navbar = () => {
                 </button>
 
                 {/* Notifications */}
-                <button style={{ 
-                    position: 'relative', 
-                    color: theme === 'light' ? 'var(--slate-600)' : 'var(--slate-300)', 
-                    background: 'none', 
-                    border: 'none', 
+                <button style={{
+                    position: 'relative',
+                    color: theme === 'light' ? 'var(--slate-600)' : 'var(--slate-300)',
+                    background: 'none',
+                    border: 'none',
                     cursor: 'pointer',
                     width: iconButtonSize,
                     height: iconButtonSize,
@@ -221,13 +220,13 @@ const Navbar = () => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                         }}>
-                            <p style={{ 
-                                fontSize: '0.875rem', 
-                                color: theme === 'light' ? 'var(--slate-900)' : 'var(--slate-100)' 
+                            <p style={{
+                                fontSize: '0.875rem',
+                                color: theme === 'light' ? 'var(--slate-900)' : 'var(--slate-100)'
                             }}>Doctor</p>
-                            <p style={{ 
-                                fontSize: '0.75rem', 
-                                color: theme === 'light' ? 'var(--slate-600)' : 'var(--slate-400)' 
+                            <p style={{
+                                fontSize: '0.75rem',
+                                color: theme === 'light' ? 'var(--slate-600)' : 'var(--slate-400)'
                             }}>Cardiologist</p>
                         </div>
                     )}
@@ -235,7 +234,7 @@ const Navbar = () => {
                         width: iconButtonSize,
                         height: iconButtonSize,
                         borderRadius: '50%',
-                        background: theme === 'light' 
+                        background: theme === 'light'
                             ? 'linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%)'
                             : 'linear-gradient(135deg, rgba(103, 232, 249, 0.2) 0%, rgba(34, 211, 238, 0.2) 100%)',
                         color: theme === 'light' ? '#0891b2' : '#67e8f9',
@@ -248,7 +247,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     );
 };
 
