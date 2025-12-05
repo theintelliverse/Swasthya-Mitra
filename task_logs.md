@@ -6,68 +6,26 @@
 
 1. Haraprasad Mahapatra
 Date - 15 Nov 2025
-Contribution - created entire folder structure of the project , added docs for future references , started user management (backend)
+Contribution - 
+**created entire folder structure of the project , added docs for future references , started user management (backend)**
 
 2. Haraprasad Mahapatra
 Date - 01 Dec 2025
-Contibution - completed User management(backend + DB Logic) and Queue Management system(backend + DB Logic)  , added documentation for future references
+Contibution - 
+**completed User management(backend + DB Logic) and Queue Management system(backend + DB Logic)  , added documentation for future references**
 
-3. Dhruvil Thummar (Frontend Development)
-Date - 02 Dec 2025
-Contribution - Completed entire frontend application with the following implementations:
+3. Dhruvil Thummar (Frontend Developer)
+Date – 02 Dec 2025
+- Completed the full frontend application (30+ pages) using React 19 + Vite, TailwindCSS, React Router, and a custom Context API. 
+- Delivered complete Admin, Doctor, Staff, and Patient dashboards, full authentication flows, reusable UI components, protected routes, and a modular layout system.
+-  Implemented 31-language multilingual support, dark/light themes, responsive design, modern UI/UX (animations, glassmorphism), and accessibility standards. Integrated Auth, Theme, and Language contexts for global state. 
+- Built core components like Navbar, Footer, Sidebar, Doctor Card, and a full design system with consistent styling.
 
-**Technology Stack:**
+4. Haraprasad Mahapatra 
+Date :- 05 Dec 2025
+contribution :-
+- refactored and modularized the backend, moving all logic from app.js into proper controllers, routes, services, middlewares, and utilities for a clean production-ready structure.
 
-- React 19.2.0 with Vite 7.2.2 for build tooling
-- TailwindCSS 4.1.17 for styling with custom design system
-- React Router DOM 7.9.6 for client-side routing
-- Lucide React for icons
-- Custom Context API for state management
+- Completed Clinic Management, improved Appointment System structure, and integrated missing controller logic to make the system consistent and scalable.
 
-**Pages Implemented (30+ pages):**
-
-- Landing Page with multilingual hero section and features
-- Auth Pages: Login, OTP Verification, Registration (Patient/Doctor/Staff), Profile Selection, Doctor Setup, Staff Password Setup
-- Admin Dashboard: Dashboard, Manage Staff, Manage Doctors, Clinic Settings, Clinic List (5 pages)
-- Doctor Dashboard: Dashboard, Queue Management, Patient History, Profile (4 pages)
-- Staff Dashboard: Dashboard, Add Walk-in Patient, Manage Queue, Patient Search, Patient Profile (5 pages)
-- Patient Dashboard: Dashboard, Bookings, Profile (3 pages)
-- System Pages: 404 Not Found, Unauthorized, Loading (3 pages)
-
-**Core Components:**
-
-- Navbar (Public + Dashboard variants with responsive design)
-- Footer with comprehensive multilingual support
-- Layout system with Sidebar for dashboards
-- Protected Routes with role-based access control
-- Reusable UI components (Button, Card, Input)
-- Language Switcher component
-- Doctor Card component
-
-**Key Features:**
-
-- **Multilingual Support**: 31 languages including English, Hindi, Bengali, Marathi, Tamil, Telugu, Gujarati, Kannada, Malayalam, Punjabi, Odia, Assamese, Urdu, Sanskrit, and 17 other Indian languages with complete translations and language-specific logos
-- **Theme System**: Full dark/light mode support with smooth transitions
-- **Responsive Design**: Mobile-first approach with optimized layouts for all screen sizes (mobile, tablet, desktop)
-- **Modern UI/UX**: Glassmorphism effects, gradient backgrounds, smooth animations, hover effects
-- **Authentication Context**: Complete auth state management with role-based routing
-- **Custom Design System**: Consistent color palettes, typography (Inter & Outfit fonts), spacing, and components
-- **Accessibility**: Semantic HTML, proper ARIA labels, keyboard navigation support
-
-**Styling & Design:**
-
-- Custom CSS with TailwindCSS utility classes
-- Glass morphism effects for cards and navigation
-- Gradient backgrounds for light and dark modes
-- Responsive utilities for all screen sizes
-- Custom scrollbar styling
-- Button and card hover effects
-- Dashboard layout system with sidebar navigation
-
-**State Management:**
-
-- LanguageContext for multilingual support with 31 language translations
-- ThemeContext for dark/light mode toggle
-- AuthContext for authentication and authorization
-
-All pages are fully functional, responsive, and integrated with the design system. The application is lint-error free and build-ready.
+- Built the Queue Display Board with full real-time Socket.IO updates, enhanced queue controller with a broadcastQueue() helper, updated queue operations, and upgraded app.js to support sockets + cron jobs.
