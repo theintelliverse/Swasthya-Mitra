@@ -1,5 +1,5 @@
 // models/appointments/DoctorAvailabilityModel.js
-const mongoose = require("../configuration/mongoose_connection");
+const mongoose = require('../../configuration/mongoose_connection');
 
 const slotSchema = new mongoose.Schema({
   start: { type: String, required: true }, // "09:00"

@@ -1,4 +1,4 @@
-const mongoose = require('../configuration/mongoose_connection');
+const mongoose = require('../../configuration/mongoose_connection');
 
 const otpSchema = mongoose.Schema({
     userId: {

@@ -3,7 +3,7 @@ const UserProfile = require("../models/users/UserProfilemodel");
 const AuthProvider = require("../models/users/AuthProvidermodel");
 const OTP = require("../models/users/OTPmodel");
 const Session = require("../models/users/Sessionmodel");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const { generateAccessToken, generateRefreshToken, sha256 } = require("../utils/jwt.utils");
 const { generateOTP } = require("../utils/otp.utils");

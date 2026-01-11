@@ -1,157 +1,229 @@
 // API Service for Swasthya-Mitra
-// Connects frontend to backend API
+// DEBUG ENABLED VERSION (SAFE FOR DEV)
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
-// Helper function to get auth token
+// -------------------- HELPERS --------------------
+
 const getAuthToken = () => {
-    return localStorage.getItem('accessToken');
+  const token = localStorage.getItem('accessToken');
+  console.log('[API] Access Token:', token);
+  return token;
 };
 
-// Helper function to handle API responses
 const handleResponse = async (response) => {
-    if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Request failed' }));
-        throw new Error(error.error || error.message || 'Request failed');
-    }
-    return response.json();
+  console.log('[API] Response status:', response.status);
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
+  }
+
+  console.log('[API] Response data:', data);
+
+  if (!response.ok) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+
+  return data;
 };
 
-// Helper function to make authenticated requests
 const authFetch = async (url, options = {}) => {
-    const token = getAuthToken();
-    const headers = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-    };
+  const token = getAuthToken();
 
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
 
-    const response = await fetch(`${API_BASE_URL}${url}`, {
-        ...options,
-        headers,
-    });
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
 
-    return handleResponse(response);
+  console.log('[API] AUTH FETCH →', `${API_BASE_URL}${url}`);
+  console.log('[API] OPTIONS →', options);
+
+  const response = await fetch(`${API_BASE_URL}${url}`, {
+    ...options,
+    headers,
+  });
+
+  return handleResponse(response);
 };
+
+// -------------------- API OBJECT --------------------
 
 export const api = {
-    // Authentication endpoints
-    auth: {
-        sendOtp: async (phone) => {
-            const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone }),
-            });
-            return handleResponse(response);
-        },
+  // -------- AUTH --------
+  auth: {
+    sendOtp: async (phone) => {
+      const payload = { phone };
 
-        verifyOtp: async (phone, otpCode, otpId) => {
-            const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, otpCode, otpId }),
-            });
-            return handleResponse(response);
-        },
+      console.log('[AUTH] sendOtp payload:', payload);
+      console.log('[AUTH] sendOtp URL:', `${API_BASE_URL}/auth/send-otp`);
 
-        login: async (phoneOrEmail, password) => {
-            const response = await fetch(`${API_BASE_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phoneOrEmail, password }),
-            });
-            return handleResponse(response);
-        },
+      const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-        register: async (data) => {
-            const response = await fetch(`${API_BASE_URL}/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            return handleResponse(response);
-        },
-
-        logout: async () => {
-            try {
-                await authFetch('/auth/logout', { method: 'POST' });
-            } finally {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-                localStorage.removeItem('userId');
-            }
-        },
+      return handleResponse(response);
     },
 
-    // User endpoints
-    user: {
-        getMe: async () => {
-            return authFetch('/me');
-        },
+    verifyOtp: async (phone, otpCode, otpId) => {
+      const payload = { phone, otpCode, otpId };
+
+      console.log('[AUTH] verifyOtp payload:', payload);
+      console.log('[AUTH] verifyOtp URL:', `${API_BASE_URL}/auth/verify-otp`);
+
+      const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      return handleResponse(response);
     },
 
-    // Clinic endpoints
-    clinic: {
-        create: async (name, address) => {
-            return authFetch('/clinics', {
-                method: 'POST',
-                body: JSON.stringify({ name, address }),
-            });
-        },
+    login: async (phoneOrEmail, password) => {
+      const payload = { phoneOrEmail, password };
 
-        addUser: async (clinicId, userId, role, permissions = []) => {
-            return authFetch('/clinic-user', {
-                method: 'POST',
-                body: JSON.stringify({ clinicId, userId, role, permissions }),
-            });
-        },
+      console.log('[AUTH] login payload:', payload);
+
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      return handleResponse(response);
     },
 
-    // Queue endpoints
-    queue: {
-        add: async (clinicId, doctorUserId, patientProfileId, appointmentId = null) => {
-            return authFetch('/queue/add', {
-                method: 'POST',
-                body: JSON.stringify({ clinicId, doctorUserId, patientProfileId, appointmentId }),
-            });
-        },
+    register: async (data) => {
+      console.log('[AUTH] register payload:', data);
 
-        getStatus: async (clinicId, doctorId) => {
-            return authFetch(`/queue/status?clinicId=${clinicId}&doctorId=${doctorId}`);
-        },
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-        next: async (clinicId, doctorUserId) => {
-            return authFetch('/queue/next', {
-                method: 'POST',
-                body: JSON.stringify({ clinicId, doctorUserId }),
-            });
-        },
-
-        skip: async (queueId) => {
-            return authFetch('/queue/skip', {
-                method: 'POST',
-                body: JSON.stringify({ queueId }),
-            });
-        },
-
-        recall: async (queueId) => {
-            return authFetch('/queue/recall', {
-                method: 'POST',
-                body: JSON.stringify({ queueId }),
-            });
-        },
-
-        complete: async (queueId) => {
-            return authFetch('/queue/complete', {
-                method: 'POST',
-                body: JSON.stringify({ queueId }),
-            });
-        },
+      return handleResponse(response);
     },
+  },
+// -------- USER --------
+user: {
+  getMe: async () => {
+    console.log('[USER] getMe → /me');
+    return authFetch('/users/me');
+  },
+},
+
+  // -------- CLINIC --------
+  clinic: {
+    create: async (name, address = '') => {
+      console.log('[CLINIC] create:', { name, address });
+
+      return authFetch('/clinics', {
+        method: 'POST',
+        body: JSON.stringify({ name, address }),
+      });
+    },
+
+    getMyClinics: async () => {
+      console.log('[CLINIC] getMyClinics');
+      return authFetch('/clinics/my-clinics');
+    },
+
+    getClinic: async (clinicId) => {
+      console.log('[CLINIC] getClinic:', clinicId);
+      return authFetch(`/clinics/${clinicId}`);
+    },
+
+    addUserToClinic: async (clinicId, userId, role, permissions = []) => {
+      console.log('[CLINIC] addUser:', { clinicId, userId, role, permissions });
+
+      return authFetch(`/clinics/${clinicId}/users`, {
+        method: 'POST',
+        body: JSON.stringify({ userId, role, permissions }),
+      });
+    },
+  },
+
+  // -------- APPOINTMENTS --------
+  appointment: {
+    book: async (data) => {
+      console.log('[APPOINTMENT] book:', data);
+
+      return authFetch('/patient/book', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    myAppointments: async (query = '') => {
+      console.log('[APPOINTMENT] myAppointments:', query);
+      return authFetch(`/patient/appointments${query}`);
+    },
+  },
+
+  // -------- QUEUE --------
+  queue: {
+    add: async (clinicId, doctorUserId, patientProfileId, appointmentId = null) => {
+      const payload = {
+        clinicId,
+        doctorUserId,
+        patientProfileId,
+        appointmentId,
+      };
+
+      console.log('[QUEUE] add:', payload);
+
+      return authFetch('/queue/add', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+    },
+
+    patientStatus: async (clinicId, doctorId, patientProfileId) => {
+      console.log('[QUEUE] patientStatus:', {
+        clinicId,
+        doctorId,
+        patientProfileId,
+      });
+
+      return authFetch(
+        `/patient/queue-status?clinicId=${clinicId}&doctorId=${doctorId}&patientProfileId=${patientProfileId}`
+      );
+    },
+  },
+
+  // -------- DOCTOR DASHBOARD --------
+  doctor: {
+    todayAppointments: async () => {
+      console.log('[DOCTOR] todayAppointments');
+      return authFetch('/doctor/today-appointments');
+    },
+
+    todayQueue: async (clinicId) => {
+      console.log('[DOCTOR] todayQueue:', clinicId);
+      return authFetch(`/doctor/today-queue?clinicId=${clinicId}`);
+    },
+
+    summary: async (clinicId) => {
+      console.log('[DOCTOR] summary:', clinicId);
+      return authFetch(`/doctor/summary?clinicId=${clinicId}`);
+    },
+
+    patients: async (clinicId) => {
+      console.log('[DOCTOR] patients:', clinicId);
+      return authFetch(`/doctor/patients?clinicId=${clinicId}`);
+    },
+  },
 };
 
 export default api;

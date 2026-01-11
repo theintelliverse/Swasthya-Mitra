@@ -1,5 +1,5 @@
 // models/NotificationModel.js
-const mongoose = require("../configuration/mongoose_connection");
+const mongoose = require('../configuration/mongoose_connection');
 
 const notificationSchema = new mongoose.Schema({
   clinicId: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic" },

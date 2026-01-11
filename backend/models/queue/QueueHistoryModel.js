@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('../../configuration/mongoose_connection');
 
 const QueueHistorySchema = new mongoose.Schema({
   clinicId: {

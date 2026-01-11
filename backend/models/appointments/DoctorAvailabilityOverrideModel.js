@@ -1,5 +1,5 @@
 // models/appointments/DoctorAvailabilityOverrideModel.js
-const mongoose = require("../configuration/mongoose_connection");
+const mongoose = require('../../configuration/mongoose_connection');
 
 const overrideSchema = new mongoose.Schema({
   doctorUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

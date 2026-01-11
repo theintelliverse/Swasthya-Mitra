@@ -8,6 +8,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { useTheme } from '../../hooks/useTheme';
 
+
 /**
  * RegisterSelectPage Component - Redesigned
  * 

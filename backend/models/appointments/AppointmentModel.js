@@ -1,5 +1,5 @@
 // models/appointments/AppointmentModel.js
-const mongoose = require("../configuration/mongoose_connection");
+const mongoose = require('../../configuration/mongoose_connection');
 
 const appointmentSchema = new mongoose.Schema({
   clinicId: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic", required: true },

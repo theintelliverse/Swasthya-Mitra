@@ -10,6 +10,7 @@ import api from '../../services/api';
 const OTPVerifyPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -24,34 +25,74 @@ const OTPVerifyPage = () => {
       const otpId = localStorage.getItem('otpId');
       const role = localStorage.getItem('loginRole') || 'patient';
 
+      console.log('[OTP VERIFY] phone:', phone);
+      console.log('[OTP VERIFY] otpId:', otpId);
+      console.log('[OTP VERIFY] raw otp:', otp);
+
       if (!phone) {
-        throw new Error('Phone number not found. Please start from login page.');
+        throw new Error('Phone number not found. Please login again.');
       }
 
-      const response = await api.auth.verifyOtp(phone, otp, otpId);
+      const cleanOtp = otp.replace(/\s+/g, '');
 
-      // Store tokens and login
-      const loginResult = await login(response.accessToken, response.refreshToken, response.userId);
+      console.log('[OTP VERIFY] clean otp:', cleanOtp);
 
-      // Clear temp storage
+      const payload = {
+        phone,
+        otpCode: cleanOtp,
+        otpId,
+      };
+
+      console.log('[OTP VERIFY] payload → backend:', payload);
+
+      // ✅ CORRECT API CALL
+      const res = await api.auth.verifyOtp(
+        phone,
+        cleanOtp,
+        otpId
+      );
+
+      console.log('[OTP VERIFY] backend response:', res);
+
+      // store tokens via auth hook
+      await login(res.accessToken, res.refreshToken, res.userId);
+
+      // cleanup temp values
       localStorage.removeItem('loginPhone');
       localStorage.removeItem('otpId');
       localStorage.removeItem('loginRole');
 
-      // Navigate based on profile selection need
-      if (loginResult.needsProfileSelection) {
-        navigate('/select-profile');
-      } else {
-        // Navigate based on  role
-        if (role === 'doctor') navigate('/doctor/dashboard');
-        else if (role === 'staff') navigate('/staff/dashboard');
-        else if (role === 'admin') navigate('/admin/dashboard');
-        else navigate('/patient/dashboard');
-      }
+      // role-based redirect (frontend hint only)
+      if (role === 'doctor') navigate('/doctor/dashboard');
+      else if (role === 'staff') navigate('/staff/dashboard');
+      else if (role === 'admin') navigate('/admin/dashboard');
+      else navigate('/patient/dashboard');
+
     } catch (err) {
+      console.error('[OTP VERIFY] error:', err);
       setError(err.message || 'Invalid OTP');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      const phone = localStorage.getItem('loginPhone');
+      if (!phone) return;
+
+      console.log('[OTP RESEND] phone:', phone);
+
+      const res = await api.auth.sendOtp(phone);
+
+      console.log('[OTP RESEND] response:', res);
+
+      if (res.otpId) {
+        localStorage.setItem('otpId', res.otpId);
+      }
+    } catch (err) {
+      console.error('[OTP RESEND] error:', err);
+      setError('Failed to resend OTP');
     }
   };
 
@@ -61,44 +102,53 @@ const OTPVerifyPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%)',
+      background: 'linear-gradient(135deg, var(--primary-50), var(--secondary-50))',
       padding: '1rem'
     }}>
-      <Card glass className="w-full max-w-md" style={{ width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+      <Card glass className="w-full max-w-md" style={{ textAlign: 'center' }}>
+
         <div style={{
-          width: '64px',
-          height: '64px',
-          backgroundColor: 'var(--success)',
-          color: 'white',
+          width: 64,
+          height: 64,
+          margin: '0 auto 1.5rem',
           borderRadius: '50%',
+          backgroundColor: 'var(--success)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          margin: '0 auto 1.5rem'
+          color: '#fff'
         }}>
           <ShieldCheck size={32} />
         </div>
 
-        <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Verify OTP</h1>
-        <p style={{ color: 'var(--slate-500)', marginBottom: '2rem' }}>Enter the 6-digit code sent to your phone.</p>
+        <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>
+          Verify OTP
+        </h1>
+        <p style={{ color: 'var(--slate-500)', marginBottom: '2rem' }}>
+          Enter the 6-digit code sent to your phone
+        </p>
 
         <form onSubmit={handleVerify}>
           <Input
             placeholder="0 0 0 0 0 0"
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            style={{ textAlign: 'center', fontSize: '1.5rem', letterSpacing: '0.5rem' }}
+            onChange={e => setOtp(e.target.value)}
             maxLength={6}
             required
+            style={{
+              textAlign: 'center',
+              fontSize: '1.5rem',
+              letterSpacing: '0.5rem'
+            }}
           />
 
           {error && (
             <div style={{
               marginTop: '0.75rem',
               padding: '0.75rem',
-              backgroundColor: '#fee2e2',
+              background: '#fee2e2',
               color: '#991b1b',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: '0.5rem',
               fontSize: '0.875rem',
               textAlign: 'left'
             }}>
@@ -108,15 +158,23 @@ const OTPVerifyPage = () => {
 
           <Button
             type="submit"
-            className="w-full"
-            style={{ width: '100%', marginTop: '1rem' }}
             isLoading={isLoading}
+            className="w-full"
+            style={{ marginTop: '1rem' }}
           >
             Verify <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
           </Button>
         </form>
 
-        <Button variant="ghost" size="sm" style={{ marginTop: '1rem' }}>Resend OTP</Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleResend}
+          style={{ marginTop: '1rem' }}
+        >
+          Resend OTP
+        </Button>
+
       </Card>
     </div>
   );

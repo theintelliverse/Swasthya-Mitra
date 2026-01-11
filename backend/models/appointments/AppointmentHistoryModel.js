@@ -1,5 +1,5 @@
 // models/appointments/AppointmentHistoryModel.js
-const mongoose = require("../configuration/mongoose_connection");
+const mongoose = require('../../configuration/mongoose_connection');
 
 const appointmentHistorySchema = new mongoose.Schema({
   appointmentId: { type: mongoose.Schema.Types.ObjectId, ref: "Appointment", required: true },
