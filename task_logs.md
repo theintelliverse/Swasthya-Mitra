@@ -29,3 +29,12 @@ contribution :-
 - Completed Clinic Management, improved Appointment System structure, and integrated missing controller logic to make the system consistent and scalable.
 
 - Built the Queue Display Board with full real-time Socket.IO updates, enhanced queue controller with a broadcastQueue() helper, updated queue operations, and upgraded app.js to support sockets + cron jobs.
+
+
+5. Haraprasad Mahapatra 
+Date :- 11 Jan 2025
+contribution :-
+- resolved bugs in various routes in the backend 
+- tested all the major used routes using thunder client
+- made several changes in the frontend folder , specially in auth , to transform it to static to dynamic 
+- completed the OTP functionality for the pateint section 
