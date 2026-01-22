@@ -38,3 +38,12 @@ contribution :-
 - tested all the major used routes using thunder client
 - made several changes in the frontend folder , specially in auth , to transform it to static to dynamic 
 - completed the OTP functionality for the pateint section 
+
+6. Haraprasad Mahapatra 
+Date :- 22 Jan 2025
+contribution :-
+- resolved bugs in various routes in the backend 
+- Integrated AI with the backend with fastAPI 
+- completed for production planned routes 
+
+
