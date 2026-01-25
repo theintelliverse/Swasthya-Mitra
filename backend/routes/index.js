@@ -9,75 +9,35 @@
 const router = require("express").Router();
 
 /**
- * AUTH ROUTES
- * Handles OTP, registration, and login.
+ * IMPORT ROUTES
  */
-router.use("/auth", require("./auth.routes"));
+const authRoutes = require("./auth.routes");
+const clinicRoutes = require("./clinic.routes");
+const userRoutes = require("./user.routes");
+const queueRoutes = require("./queue.routes");
+const clinicUserRoutes = require("./clinicUser.routes");
+const appointmentRoutes = require("./appointment.routes");
+const doctorRoutes = require("./doctor.routes");
+const patientRoutes = require("./patient.routes");
+const adminRoutes = require("./admin.routes");
+const notificationRoutes = require("./notification.routes");
+const queueDisplayRoutes = require("./queueDisplay.routes");
+const aiRoutes = require("./ai.routes");
 
-/**
- * CLINIC ROUTES
- * Handles clinic creation, retrieval, update, and deletion.
- */
-router.use("/clinics", require("./clinic.routes"));
-
-/**
- * USER ROUTES
- * Handles user profile and logged-in user operations.
- */
-router.use("/users", require("./user.routes"));
-
-/**
- * QUEUE ROUTES
- * Handles queue operations like add, next, skip, recall, complete.
- */
-router.use("/queue", require("./queue.routes"));
-
-/**
- * CLINIC USER ROUTES
- * Handles clinic membership and role management.
- */
-router.use("/clinics", require("./clinicUser.routes"));
-
-/**
- * APPOINTMENT ROUTES
- * Handles appointment lifecycle and check-in flow.
- */
-router.use("/appointments", require("./appointment.routes"));
-
-/**
- * DOCTOR ROUTES
- * Handles doctor dashboards, queues, and patient views.
- */
-router.use("/doctor", require("./doctor.routes"));
-
-/**
- * PATIENT ROUTES
- * Handles patient bookings, appointments, and queue status.
- */
-router.use("/patient", require("./patient.routes"));
-
-/**
- * ADMIN ROUTES
- * Handles clinic-level analytics and administrative views.
- */
-router.use("/admin", require("./admin.routes"));
-
-/**
- * NOTIFICATION ROUTES
- * Handles notification creation, dispatch, and retrieval.
- */
-router.use("/notifications", require("./notification.routes"));
-
-/**
- * QUEUE DISPLAY ROUTES
- * Provides display-safe queue data for screens/TVs.
- */
-router.use("/queue-display", require("./queueDisplay.routes"));
-
-/**
- * AI ROUTES
- * Integrates with AI service for wait-time prediction.
- */
-router.use("/ai", require("./ai.routes"));
+router.use("/auth", authRoutes);
+router.use("/clinics", clinicRoutes);
+router.use("/users", userRoutes);
+router.use("/queue", queueRoutes);
+// Note: /clinics is used twice (for clinic mgmt and clinic users). 
+// Express allows this. Ensure paths don't conflict or usually we mount clinic users under /clinics/:id/users
+// But based on previous code, it was mounted on /clinics. Let's keep it.
+router.use("/clinics", clinicUserRoutes);
+router.use("/appointments", appointmentRoutes);
+router.use("/doctor", doctorRoutes);
+router.use("/patient", patientRoutes);
+router.use("/admin", adminRoutes);
+router.use("/notifications", notificationRoutes);
+router.use("/queue-display", queueDisplayRoutes);
+router.use("/ai", aiRoutes);
 
 module.exports = router;

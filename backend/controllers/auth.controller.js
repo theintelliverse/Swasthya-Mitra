@@ -40,30 +40,51 @@ module.exports = {
       res.json({ message: "OTP sent", otpId: otpDoc._id });
     } catch (err) {
       console.error("sendOtp error", err);
-      res.status(500).json({ error: "Server error" });
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        fs.appendFileSync(path.join(__dirname, '../logs/error.log'), new Date().toISOString() + ' sendOtp error: ' + err.stack + '\n');
+      } catch (logErr) { console.error("Logging failed", logErr); }
+      res.status(500).json({ error: "Server error", details: err.message });
     }
   },
 
   // -------------------------------- VERIFY OTP
   verifyOtp: async (req, res) => {
-    const { phone, otpCode, otpId } = req.body;
-    if (!phone || !otpCode)
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      fs.appendFileSync(path.join(__dirname, '../logs/error.log'), `${new Date().toISOString()} Verify REQ: ${JSON.stringify(req.body)}\n`);
+    } catch (e) { }
+
+    const { phone, otpCode, otp, otpId } = req.body;
+    const code = otpCode || otp;
+
+    if (!phone || !code) {
+      console.log("Missing phone/code", req.body);
       return res.status(400).json({ error: "phone & otpCode required" });
+    }
 
     try {
-      let otp = otpId
+      let otpDoc = otpId
         ? await OTP.findById(otpId)
         : await OTP.findOne({ phone }).sort({ createdAt: -1 });
 
-      if (!otp) return res.status(400).json({ error: "OTP not found" });
-      if (otp.isUsed) return res.status(400).json({ error: "OTP used" });
-      if (otp.expiresAt < new Date()) return res.status(400).json({ error: "OTP expired" });
-      if (otp.otpCode !== otpCode) return res.status(400).json({ error: "Invalid OTP" });
+      if (!otpDoc) {
+        console.log("OTP not found for", phone);
+        return res.status(400).json({ error: "OTP not found" });
+      }
+      if (otpDoc.isUsed) return res.status(400).json({ error: "OTP used" });
+      if (otpDoc.expiresAt < new Date()) return res.status(400).json({ error: "OTP expired" });
+      if (otpDoc.otpCode !== code) {
+        console.log("Invalid OTP", { expected: otpDoc.otpCode, received: code });
+        return res.status(400).json({ error: "Invalid OTP" });
+      }
 
-      otp.isUsed = true;
-      await otp.save();
+      otpDoc.isUsed = true;
+      await otpDoc.save();
 
-      const user = await User.findById(otp.userId);
+      const user = await User.findById(otpDoc.userId);
       user.isPhoneVerified = true;
       await user.save();
 
@@ -81,12 +102,24 @@ module.exports = {
       res.json({ message: "OTP verified", accessToken, refreshToken, userId: user._id });
     } catch (err) {
       console.error("verifyOtp error", err);
-      res.status(500).json({ error: "Server error" });
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const logMsg = `${new Date().toISOString()} Verify OTP Error: ${err.message}\nStack: ${err.stack}\nBody: ${JSON.stringify(req.body)}\n\n`;
+        fs.appendFileSync(path.join(__dirname, '../logs/error.log'), logMsg);
+      } catch (logErr) { console.error("Logging failed", logErr); }
+      res.status(500).json({ error: "Server error", details: err.message });
     }
   },
 
   // -------------------------------- REGISTER
   register: async (req, res) => {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      fs.appendFileSync(path.join(__dirname, '../logs/error.log'), `${new Date().toISOString()} Register REQ: ${JSON.stringify(req.body)}\n`);
+    } catch (e) { }
+
     const { phone, email, password, name } = req.body;
     if (!password || !name) return res.status(400).json({ error: "Name & password required" });
 
@@ -111,7 +144,12 @@ module.exports = {
       res.json({ message: "Registered", userId: user._id, profileId: profile._id });
     } catch (err) {
       console.error("register error", err);
-      res.status(500).json({ error: "Server error" });
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        fs.appendFileSync(path.join(__dirname, '../logs/error.log'), `${new Date().toISOString()} Register Error: ${err.message}\nStack: ${err.stack}\n`);
+      } catch (logErr) { }
+      res.status(500).json({ error: "Server error", details: err.message });
     }
   },
 

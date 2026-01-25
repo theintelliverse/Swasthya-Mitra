@@ -83,6 +83,13 @@ router.post("/", auth, clinicCtrl.createClinic);
 router.get("/my-clinics", auth, clinicCtrl.getMyClinics);
 
 /**
+/**
+ * GET /all
+ * Fetch all clinics
+ */
+router.get("/all", auth, clinicCtrl.getAllClinics);
+
+/**
  * =====================================================
  * ROUTE #8.3
  * =====================================================
@@ -105,6 +112,12 @@ router.get("/my-clinics", auth, clinicCtrl.getMyClinics);
  * 404 → clinic not found
  */
 router.get("/:clinicId", auth, clinicCtrl.getClinic);
+
+/**
+ * GET /:clinicId/doctors
+ * Fetch doctors of a clinic
+ */
+router.get("/:clinicId/doctors", auth, clinicCtrl.getClinicDoctors);
 
 /**
  * =====================================================

@@ -114,7 +114,6 @@ router.get(
 router.get(
   "/summary",
   auth,
-  requireClinicRole(["doctor", "admin"]),
   doctor.summary
 );
 
@@ -145,8 +144,18 @@ router.get(
 router.get(
   "/patients",
   auth,
-  requireClinicRole(["doctor", "admin", "staff"]),
   doctor.patients
+);
+
+/**
+ * POST /queue/action
+ * Handle queue actions
+ */
+router.post(
+  "/queue/action",
+  auth,
+  requireClinicRole(["doctor", "admin"]),
+  doctor.handleQueueAction
 );
 
 module.exports = router;

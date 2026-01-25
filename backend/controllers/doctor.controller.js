@@ -30,7 +30,12 @@ exports.todayAppointments = async (req, res) => {
     return res.json({ items });
   } catch (err) {
     console.error("todayAppointments error", err);
-    return res.status(500).json({ error: "Server error" });
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      fs.appendFileSync(path.join(__dirname, '../logs/error.log'), `${new Date().toISOString()} Doctor Error: ${err.message}\nStack: ${err.stack}\n`);
+    } catch (e) { }
+    return res.status(500).json({ error: "Server error", details: err.message });
   }
 };
 
@@ -84,17 +89,25 @@ exports.summary = async (req, res) => {
     // avg waiting time: compute from QueueHistory or Queue documents if available
     // We'll approximate: average time between checkIn (queue.checkInTime) and calledAt in QueueHistory if exists
     const qHistory = require("../models/queue/QueueHistoryModel");
-    const histories = await qHistory.find({ doctorUserId, clinicId }).sort({ createdAt: -1 }).limit(200);
+    const qH = { doctorUserId, clinicId };
+    if (!clinicId) delete qH.clinicId;
+
+    const histories = await qHistory.find(qH).sort({ createdAt: -1 }).limit(200);
     let avgWait = null;
     if (histories.length) {
       const waits = histories.map(h => (h.actualWaitTime || 0));
-      avgWait = waits.reduce((a,b)=>a+b,0)/waits.length;
+      avgWait = waits.reduce((a, b) => a + b, 0) / waits.length;
     }
 
     return res.json({ total, completed, cancelled, no_show, avgWaitMinutes: avgWait });
   } catch (err) {
     console.error("summary error", err);
-    return res.status(500).json({ error: "Server error" });
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      fs.appendFileSync(path.join(__dirname, '../logs/error.log'), `${new Date().toISOString()} Summary Error: ${err.message}\nStack: ${err.stack}\n`);
+    } catch (e) { }
+    return res.status(500).json({ error: "Server error", details: err.message });
   }
 };
 
@@ -128,6 +141,89 @@ exports.patients = async (req, res) => {
     return res.json({ patients });
   } catch (err) {
     console.error("patients error", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+/**
+ * POST /doctor/queue/action
+ * Body: { action: "NEXT" | "COMPLETE" | "SKIP" | "PAUSE", clinicId }
+ */
+const socketIO = require("../socket");
+const emitQueueUpdate = socketIO && socketIO.emitQueueUpdate ? socketIO.emitQueueUpdate : () => console.log("Socket not init");
+
+exports.handleQueueAction = async (req, res) => {
+  try {
+    const doctorUserId = req.user.id;
+    const { action, clinicId } = req.body;
+
+    if (!clinicId) return res.status(400).json({ error: "clinicId required" });
+
+    // 1. Find current active
+    const current = await Queue.findOne({
+      clinicId,
+      doctorUserId,
+      status: "in_consultation"
+    });
+
+    if (action === "COMPLETE") {
+      if (current) {
+        current.status = "done";
+        current.completedAt = new Date();
+        await current.save();
+
+        // Update appointment status if exists
+        if (current.appointmentId) {
+          const updateData = { status: "completed" };
+          // If notes provided, save them
+          if (req.body.notes) {
+            updateData.notes = req.body.notes;
+          }
+          await Appointment.findByIdAndUpdate(current.appointmentId, updateData);
+        }
+      }
+    } else if (action === "NEXT") {
+      // Complete current if exists
+      if (current) {
+        current.status = "done";
+        current.completedAt = new Date();
+        await current.save();
+        if (current.appointmentId) {
+          await Appointment.findByIdAndUpdate(current.appointmentId, { status: "completed" });
+        }
+      }
+
+      // Find next waiting
+      const nextPatient = await Queue.findOne({
+        clinicId,
+        doctorUserId,
+        status: "waiting"
+      }).sort({ queueNumber: 1 });
+
+      if (nextPatient) {
+        nextPatient.status = "in_consultation";
+        nextPatient.calledAt = new Date();
+        await nextPatient.save();
+        if (nextPatient.appointmentId) {
+          await Appointment.findByIdAndUpdate(nextPatient.appointmentId, { status: "in_consultation" });
+        }
+      }
+    } else if (action === "SKIP") {
+      if (current) {
+        current.status = "skipped";
+        await current.save();
+        if (current.appointmentId) {
+          await Appointment.findByIdAndUpdate(current.appointmentId, { status: "no_show" }); // or internal skipped status
+        }
+      }
+    }
+
+    // Emit Update
+    emitQueueUpdate(clinicId, doctorUserId, { clinicId, doctorId: doctorUserId });
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("handleQueueAction error", err);
     return res.status(500).json({ error: "Server error" });
   }
 };

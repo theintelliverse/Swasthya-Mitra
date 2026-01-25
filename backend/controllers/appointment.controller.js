@@ -41,7 +41,13 @@ exports.create = async (req, res) => {
     return res.json({ message: "Appointment created", appointment: appt });
   } catch (err) {
     console.error("create appointment error", err);
-    return res.status(500).json({ error: "Server error" });
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const logMsg = `${new Date().toISOString()} Create Appointment Error: ${err.message}\nStack: ${err.stack}\nBody: ${JSON.stringify(req.body)}\n\n`;
+      fs.appendFileSync(path.join(__dirname, '../logs/error.log'), logMsg);
+    } catch (logErr) { console.error("Logging failed", logErr); }
+    return res.status(500).json({ error: "Server error", details: err.message });
   }
 };
 

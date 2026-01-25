@@ -109,3 +109,41 @@ exports.deleteClinic = async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+/**
+ * Get doctors of a clinic (public/authenticated)
+ */
+exports.getClinicDoctors = async (req, res) => {
+  try {
+    const { clinicId } = req.params;
+    const users = await ClinicUser.find({ clinicId, role: "doctor", isActive: true })
+      .populate("userId", "name phone email") // Populate specific fields
+      .select("userId role permissions");
+
+    // Transform to flat structure if needed
+    const doctors = users.map(u => ({
+      _id: u.userId._id,
+      name: u.userId.name,
+      role: u.role,
+      clinicUserId: u._id
+    }));
+
+    return res.json({ doctors });
+  } catch (err) {
+    console.error("getClinicDoctors error", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+/**
+ * Get all clinics (public/authenticated)
+ */
+exports.getAllClinics = async (req, res) => {
+  try {
+    const clinics = await Clinic.find().select("name address");
+    return res.json({ clinics });
+  } catch (err) {
+    console.error("getAllClinics error", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+};

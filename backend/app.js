@@ -16,6 +16,7 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     "http://localhost:5173", // Vite frontend
+    "http://localhost:5176", // Vite frontend (alternate port)
     "http://localhost:3000"  // optional: same-origin
   ],
   credentials: true,
@@ -43,3 +44,5 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Swasthya-Mitra backend running with Socket.IO on port ${PORT}`);
 });
+
+// Forced restart trigger 2
