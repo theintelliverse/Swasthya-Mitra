@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "framework": "vite",
+  "buildCommand": "cd new_frontend && npm install && npm run build",
+  "outputDirectory": "new_frontend/dist",
+  "functions": {
+    "api/[...all].js": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

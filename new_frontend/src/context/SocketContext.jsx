@@ -9,11 +9,18 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const { user } = useAuth();
+    const defaultSocketUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+    const socketUrl = import.meta.env.VITE_SOCKET_URL?.trim() || defaultSocketUrl;
 
     useEffect(() => {
         if (user) {
+            if (!socketUrl) {
+                setSocket(null);
+                return;
+            }
+
             // Initialize socket connection
-            const newSocket = io('http://localhost:3000', {
+            const newSocket = io(socketUrl, {
                 auth: {
                     token: localStorage.getItem('accessToken') // Send token for auth
                 }
@@ -36,7 +43,7 @@ export const SocketProvider = ({ children }) => {
                 setSocket(null);
             }
         }
-    }, [user]);
+    }, [user, socketUrl]);
 
     return (
         <SocketContext.Provider value={{ socket }}>

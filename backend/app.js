@@ -13,23 +13,21 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173", // Vite frontend
-    "http://localhost:5176", // Vite frontend (alternate port)
-    "http://localhost:3000"  // optional: same-origin
-  ],
-  credentials: true,
-}));
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:5176,http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-// Wrap express in HTTP server
-const server = http.createServer(app);
-
-// Initialize socket.io
-initSocket(server);
-
-// Start scheduled notification jobs
-startNotificationJob();
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 // API routes
 app.use("/api", routes);
@@ -41,8 +39,18 @@ app.get("/health", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-  console.log(`Swasthya-Mitra backend running with Socket.IO on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  const server = http.createServer(app);
+  initSocket(server);
+  startNotificationJob();
+
+  server.listen(PORT, () => {
+    console.log(`Swasthya-Mitra backend running with Socket.IO on port ${PORT}`);
+  });
+} else {
+  console.log("Running in Vercel serverless mode: Socket.IO and cron jobs are disabled.");
+}
+
+module.exports = app;
 
 // Forced restart trigger 2
