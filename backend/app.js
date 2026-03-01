@@ -37,6 +37,10 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", time: new Date() });
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", time: new Date() });
+});
+
 const PORT = process.env.PORT || 3000;
 
 const isServerlessRuntime = process.env.VERCEL || process.env.SERVERLESS === "true";
