@@ -39,7 +39,9 @@ app.get("/health", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-if (!process.env.VERCEL) {
+const isServerlessRuntime = process.env.VERCEL || process.env.SERVERLESS === "true";
+
+if (!isServerlessRuntime) {
   const server = http.createServer(app);
   initSocket(server);
   startNotificationJob();
